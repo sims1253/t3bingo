@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { z } from 'zod'
 import { checkBingo, generateBoard } from '#/lib/bingo'
 import { loadMarks, saveMarks, toggleMark } from '#/lib/marks'
+import { generateRandomSeed, generateDifferentSeed } from '#/lib/seed'
 import { Board } from '#/components/Board'
 import { Celebration } from '#/components/Celebration'
 import { RotateCcw, Share2 } from 'lucide-react'
@@ -18,14 +19,6 @@ export const Route = createFileRoute('/game')({
   }),
   component: GamePage,
 })
-
-function generateRandomSeed(): string {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  const length = 10
-  const array = new Uint8Array(length)
-  crypto.getRandomValues(array)
-  return Array.from(array, (byte) => chars[byte % chars.length]).join('')
-}
 
 function GamePage() {
   const { seed: rawSeed } = Route.useSearch()
@@ -55,6 +48,11 @@ function GamePage() {
   const handleToggle = useCallback((index: number) => {
     setMarks((prev) => toggleMark(prev, index))
   }, [])
+
+  const handleNewGame = useCallback(() => {
+    const newSeed = generateDifferentSeed(seed)
+    void navigate({ to: '/game', search: { seed: newSeed } })
+  }, [seed, navigate])
 
   if (!seed) {
     const newSeed = generateRandomSeed()
@@ -89,6 +87,7 @@ function GamePage() {
         <div className="mt-4 flex items-center justify-center gap-3">
           <button
             type="button"
+            onClick={handleNewGame}
             className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-[rgba(50,143,151,0.3)] bg-[var(--surface)] px-5 py-2 text-sm font-medium text-[var(--lagoon-deep)] transition-colors hover:bg-[rgba(79,184,178,0.15)] focus:outline-none focus:ring-2 focus:ring-[var(--lagoon)]"
           >
             <RotateCcw className="h-4 w-4" aria-hidden="true" />

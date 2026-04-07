@@ -1,20 +1,13 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { generateRandomSeed } from '#/lib/seed'
 
 export const Route = createFileRoute('/')({ component: LandingPage })
-
-function generateSeed(): string {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  const length = 10
-  const array = new Uint8Array(length)
-  crypto.getRandomValues(array)
-  return Array.from(array, (byte) => chars[byte % chars.length]).join('')
-}
 
 function LandingPage() {
   const navigate = useNavigate()
 
   function handlePlay() {
-    const seed = generateSeed()
+    const seed = generateRandomSeed()
     void navigate({ to: '/game', search: { seed } })
   }
 
