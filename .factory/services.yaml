@@ -2,7 +2,7 @@ commands:
   install: bun install
   dev: bun run dev
   build: bun run build
-  test: bun test
+  test: bun run test
   typecheck: bun run typecheck
   lint: bun run lint
 
