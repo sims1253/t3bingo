@@ -1,6 +1,8 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useCallback, useEffect, useState } from 'react'
 import { z } from 'zod'
 import { generateBoard } from '#/lib/bingo'
+import { loadMarks, saveMarks, toggleMark } from '#/lib/marks'
 import { Board } from '#/components/Board'
 import { RotateCcw, Share2 } from 'lucide-react'
 
@@ -31,6 +33,28 @@ function GamePage() {
   // If no seed provided (empty string), generate a random one and navigate
   const seed = rawSeed || ''
 
+  // Mark state: initialized from sessionStorage, synced on every change
+  const [marks, setMarks] = useState<Set<number>>(() => {
+    if (typeof window === 'undefined' || !seed) return new Set()
+    return loadMarks(seed, (key) => window.sessionStorage.getItem(key))
+  })
+
+  // Reload marks when seed changes (e.g. URL manually edited)
+  useEffect(() => {
+    if (!seed) return
+    setMarks(loadMarks(seed, (key) => window.sessionStorage.getItem(key)))
+  }, [seed])
+
+  // Persist marks to sessionStorage whenever they change
+  useEffect(() => {
+    if (!seed) return
+    saveMarks(seed, marks, (key, value) => window.sessionStorage.setItem(key, value))
+  }, [seed, marks])
+
+  const handleToggle = useCallback((index: number) => {
+    setMarks((prev) => toggleMark(prev, index))
+  }, [])
+
   if (!seed) {
     const newSeed = generateRandomSeed()
     void navigate({
@@ -54,7 +78,7 @@ function GamePage() {
           t3ingo
         </h1>
 
-        <Board items={board} />
+        <Board items={board} marks={marks} onToggle={handleToggle} />
 
         <div className="mt-4 flex items-center justify-center gap-3">
           <button
