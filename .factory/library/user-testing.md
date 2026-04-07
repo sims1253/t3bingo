@@ -44,3 +44,26 @@ Testing surface, required testing skills/tools, and resource cost classification
 - No external services to mock or set up
 - SSR content can be verified via `curl` or view-source
 - Mobile testing via viewport emulation in agent-browser (no physical devices needed)
+- **networkidle warning:** `agent-browser wait --load networkidle` times out (~25s) on the dev server because Vite's hot-reload WebSocket keeps the network active. Use a fixed wait (e.g., `sleep 2000`) or `--load domcontentloaded` instead.
+
+## Flow Validator Guidance: browser
+
+**Isolation rules:**
+- Each flow validator gets its own agent-browser session (named session, never "default")
+- Validators operate on the same dev server (port 3000) — no separate instances needed
+- The landing page is read-only; multiple validators can navigate to `/` concurrently without state conflicts
+- Game page mark state uses sessionStorage (per-tab) — different sessions are automatically isolated
+
+**Shared state to avoid:**
+- Do not modify any source files, configuration, or service state
+- Do not kill or restart the dev server
+- Do not clear browser storage belonging to other sessions
+
+**Resources off-limits:**
+- Port 3000 is reserved for the dev server — do not start other servers on this port
+- `/tmp/t3ingo-dev.log` is the dev server log — read-only
+
+**Constraints for safe concurrent testing:**
+- Use unique agent-browser session names to avoid browser context collisions
+- Take screenshots for evidence; do not modify the application
+- If a validator needs to test click interactions (e.g., Play button), be aware the seed is random — just verify the pattern, not specific values

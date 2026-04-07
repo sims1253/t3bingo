@@ -1,0 +1,125 @@
+{
+  "groupId": "landing-page-seo-responsive",
+  "testedAt": "2026-04-07T00:00:00Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "session": "74305a03ff88__grpB",
+    "page": "/",
+    "viewport": "375x667 (mobile) / 1440x900 (desktop)"
+  },
+  "toolsUsed": ["agent-browser", "curl"],
+  "assertions": [
+    {
+      "id": "VAL-SE-001",
+      "title": "Landing page has a descriptive <title> tag",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Navigate to http://localhost:3000/",
+          "expected": "Page loads successfully",
+          "observed": "Page loaded successfully"
+        },
+        {
+          "action": "Get document.title via agent-browser",
+          "expected": "Title contains app name and description (e.g., 't3ingo — Theo Twitch Bingo')",
+          "observed": "document.title = 't3ingo — Theo Twitch Bingo'"
+        }
+      ],
+      "evidence": {
+        "documentTitle": "t3ingo — Theo Twitch Bingo",
+        "screenshots": ["landing-page-seo-responsive/VAL-SE-001-landing-desktop.png"],
+        "consoleErrors": "none"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SE-005",
+      "title": "Page content is server-side rendered",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "curl http://localhost:3000 to get raw HTML",
+          "expected": "Raw HTML contains main heading and visible text content",
+          "observed": "Raw HTML response contains full SSR content including: <title>t3ingo — Theo Twitch Bingo</title>, <h1>t3ingo</h1>, <p>Theo Twitch Bingo</p>, description paragraph, and Play button with SVG icon"
+        }
+      ],
+      "evidence": {
+        "method": "curl http://localhost:3000",
+        "ssrContent": {
+          "titleTag": "<title>t3ingo — Theo Twitch Bingo</title>",
+          "mainHeading": "<h1 ...>t3ingo</h1>",
+          "subheading": "<p ...>Theo Twitch Bingo</p>",
+          "description": "Play bingo with funny recurring moments from Theo's Twitch livestreams...",
+          "playButton": "<button type=\"button\" ...>Play</button>",
+          "metaDescription": "<meta name=\"description\" content=\"A bingo game for Theo Twitch livestreams...\"/>",
+          "ogTags": "og:title and og:description present"
+        },
+        "screenshots": [],
+        "consoleErrors": "none"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SE-007",
+      "title": "Favicon is present",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Check raw HTML for favicon link tag",
+          "expected": "<link rel=\"icon\"> present in HTML head",
+          "observed": "Found: <link rel=\"icon\" href=\"/favicon.ico\"/>"
+        },
+        {
+          "action": "curl -o /dev/null -w '%{http_code}' http://localhost:3000/favicon.ico",
+          "expected": "HTTP 200 response",
+          "observed": "HTTP 200"
+        }
+      ],
+      "evidence": {
+        "htmlTag": "<link rel=\"icon\" href=\"/favicon.ico\"/>",
+        "faviconHttpStatus": 200,
+        "screenshots": [],
+        "consoleErrors": "none"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-RD-008",
+      "title": "Landing page is responsive",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Set viewport to 375x667 (iPhone SE mobile)",
+          "expected": "Viewport set successfully",
+          "observed": "Viewport set to 375x667"
+        },
+        {
+          "action": "Take screenshot at mobile viewport",
+          "expected": "Title, description, and Play button visible without horizontal scroll",
+          "observed": "Screenshot confirms all elements visible and properly laid out"
+        },
+        {
+          "action": "Check for horizontal overflow via JS eval",
+          "expected": "scrollWidth === innerWidth (no horizontal scroll)",
+          "observed": "scrollWidth=375, innerWidth=375, overflow=false"
+        }
+      ],
+      "evidence": {
+        "viewport": "375x667",
+        "horizontalScroll": false,
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "elementsVisible": ["t3ingo heading", "Theo Twitch Bingo subheading", "description text", "Play button"],
+        "screenshots": [
+          "landing-page-seo-responsive/VAL-RD-008-mobile-375x667.png",
+          "landing-page-seo-responsive/VAL-RD-008-mobile-375x667-annotated.png"
+        ],
+        "consoleErrors": "none"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 4 assertions: 4 passed (VAL-SE-001, VAL-SE-005, VAL-SE-007, VAL-RD-008). Landing page has a descriptive title ('t3ingo — Theo Twitch Bingo'), content is fully server-side rendered (h1, description, and Play button present in raw HTML), favicon is referenced and loads with HTTP 200, and the page is responsive at 375×667 with no horizontal scroll."
+}
