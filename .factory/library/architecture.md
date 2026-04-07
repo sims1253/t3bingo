@@ -25,15 +25,15 @@ User visits / → Landing page (SSR) → Clicks "Play" → /game?seed=abc123
 ## Components
 
 ### Routes
-- `app/routes/__root.tsx` — Root layout (HTML shell, global styles, meta)
-- `app/routes/index.tsx` — Landing page (`/`)
-- `app/routes/game.tsx` — Game page (`/game?seed=...`)
+- `src/routes/__root.tsx` — Root layout (HTML shell, global styles, meta)
+- `src/routes/index.tsx` — Landing page (`/`)
+- `src/routes/game.tsx` — Game page (`/game?seed=...`)
 
-### Game Logic (`app/lib/`)
+### Game Logic (`src/lib/`)
 - `bingo.ts` — Seeded PRNG, board generation, bingo detection algorithms
 - `items.ts` — Curated pool of 45 bingo items (flat array of strings)
 
-### UI Components (`app/components/`)
+### UI Components (`src/components/`)
 - `Board.tsx` — 5x5 grid container
 - `Square.tsx` — Individual cell (clickable, toggleable)
 - `Celebration.tsx` — Celebration effect (confetti/banner)
