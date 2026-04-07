@@ -1,6 +1,8 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { z } from 'zod'
 import { generateBoard } from '#/lib/bingo'
+import { Board } from '#/components/Board'
+import { RotateCcw, Share2 } from 'lucide-react'
 
 const gameSearchSchema = z.object({
   seed: z.string().optional().default(''),
@@ -8,6 +10,9 @@ const gameSearchSchema = z.object({
 
 export const Route = createFileRoute('/game')({
   validateSearch: gameSearchSchema,
+  head: () => ({
+    meta: [{ title: 't3ingo — Playing' }],
+  }),
   component: GamePage,
 })
 
@@ -27,7 +32,6 @@ function GamePage() {
   const seed = rawSeed || ''
 
   if (!seed) {
-    // Generate a random seed and redirect to the seeded URL
     const newSeed = generateRandomSeed()
     void navigate({
       to: '/game',
@@ -50,21 +54,23 @@ function GamePage() {
           t3ingo
         </h1>
 
-        <div
-          className="grid grid-cols-5 gap-1.5 sm:gap-2"
-          role="grid"
-          aria-label="Bingo board"
-        >
-          {board.map((item, index) => (
-            <button
-              key={index}
-              type="button"
-              className="flex aspect-square items-center justify-center rounded-md border border-[rgba(50,143,151,0.2)] bg-[var(--bg-base)] px-1 text-center text-xs font-medium text-[var(--sea-ink)] transition-colors hover:bg-[rgba(79,184,178,0.1)] focus:outline-none focus:ring-2 focus:ring-[var(--lagoon)] sm:text-sm"
-              aria-label={item}
-            >
-              <span className="line-clamp-3">{item}</span>
-            </button>
-          ))}
+        <Board items={board} />
+
+        <div className="mt-4 flex items-center justify-center gap-3">
+          <button
+            type="button"
+            className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-[rgba(50,143,151,0.3)] bg-[var(--surface)] px-5 py-2 text-sm font-medium text-[var(--lagoon-deep)] transition-colors hover:bg-[rgba(79,184,178,0.15)] focus:outline-none focus:ring-2 focus:ring-[var(--lagoon)]"
+          >
+            <RotateCcw className="h-4 w-4" aria-hidden="true" />
+            New Game
+          </button>
+          <button
+            type="button"
+            className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-[rgba(50,143,151,0.3)] bg-[var(--surface)] px-5 py-2 text-sm font-medium text-[var(--lagoon-deep)] transition-colors hover:bg-[rgba(79,184,178,0.15)] focus:outline-none focus:ring-2 focus:ring-[var(--lagoon)]"
+          >
+            <Share2 className="h-4 w-4" aria-hidden="true" />
+            Share
+          </button>
         </div>
 
         <p className="mt-4 text-center text-xs text-[var(--sea-ink-soft)]">
