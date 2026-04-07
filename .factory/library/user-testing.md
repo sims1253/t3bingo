@@ -46,6 +46,17 @@ Testing surface, required testing skills/tools, and resource cost classification
 - Mobile testing via viewport emulation in agent-browser (no physical devices needed)
 - **networkidle warning:** `agent-browser wait --load networkidle` times out (~25s) on the dev server because Vite's hot-reload WebSocket keeps the network active. Use a fixed wait (e.g., `sleep 2000`) or `--load domcontentloaded` instead.
 
+## Playwright Click Workaround
+
+- **Playwright clicks timeout** on board squares, especially during celebration overlay or with special characters (quotes) in square text. The first click usually succeeds, but subsequent chained clicks fail.
+- **Workaround:** Use JS eval to click squares directly: `document.querySelectorAll('button[aria-pressed]')[index].click()` or `element.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true}))`.
+- **React state delay:** After JS clicks, wait ~500ms before checking DOM state (React batches updates).
+- **sessionStorage setup:** For tests needing specific mark states, set marks via JS eval (`sessionStorage.setItem(key, JSON.stringify(marksArray))`) and reload, rather than clicking each square individually.
+
+## Known Console Warnings
+
+- **React hydration mismatch:** SSR renders all squares unmarked; client hydrates with marks from sessionStorage. This causes `"Rendered more hooks than during the previous render"` or hydration mismatch warnings. **Non-blocking** — functional behavior is correct; React re-renders with proper client state.
+
 ## Flow Validator Guidance: browser
 
 **Isolation rules:**

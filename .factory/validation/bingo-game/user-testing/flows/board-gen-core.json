@@ -1,0 +1,254 @@
+{
+  "groupId": "board-gen-core",
+  "testedAt": "2026-04-08T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "sessionName": "4564b48db884__bgcore",
+    "testingTool": "agent-browser"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-BG-001",
+      "title": "Seed produces a deterministic board",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Navigate to /game?seed=testseed123 (first time)",
+          "expected": "Board renders with 25 squares",
+          "observed": "Board renders with 25 squares containing text"
+        },
+        {
+          "action": "Extract all 25 square texts from DOM",
+          "expected": "List of 25 text strings",
+          "observed": "[\"Says \\\"this is actually really simple\\\" about something complex\",\"Talks about his streaming setup\",\"Starts a side project on stream\",\"Mentions t3.gg\",\"Brings up the state of web development\",\"Hasn't had time to do his hair\",\"Talks about AI coding assistants\",\"Shows off a keyboard or mechanical keyboard take\",\"Roasts a tech startup\",\"Gets emotional about open source\",\"Does the \\\"don't credit me, you did all the work\\\" thing\",\"Mentions cargo culting\",\"Gets nerdsniped\",\"Accidentally closes the wrong tab\",\"Does the \\\"I'm not mad, I'm just disappointed\\\" look\",\"Brings up the fountain again\",\"Mentions \\\"golden path\\\"\",\"Goes on an extended skateboard tangent\",\"Leaks his email / API key\",\"Argues with chat about tabs vs spaces\",\"Discusses Vercel or Next.js\",\"Talks about how bad most software is\",\"Someone builds something for Theo and he falls in love\",\"Goes on a tangent about design/UX\",\"Debates hiring someone live on stream\"]"
+        },
+        {
+          "action": "Navigate to /game?seed=testseed123 (second time)",
+          "expected": "Identical board layout with same text in same positions",
+          "observed": "Identical board — all 25 squares have exactly the same text in exactly the same grid positions as the first load"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/board-gen-core/VAL-BG-001-first-open.png",
+          "bingo-game/board-gen-core/VAL-BG-001-second-open.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /game?seed=testseed123 -> 200 (both times)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-BG-002",
+      "title": "Different seeds produce different boards",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Navigate to /game?seed=alpha",
+          "expected": "Board renders with 25 squares",
+          "observed": "Board renders; first square is 'Gets trolled by his team'"
+        },
+        {
+          "action": "Navigate to /game?seed=beta",
+          "expected": "Board renders with different squares than seed=alpha",
+          "observed": "Board renders; first square is 'Reviews a viewer's PR' — clearly different from alpha board"
+        },
+        {
+          "action": "Compare board layouts",
+          "expected": "At least some squares differ in text or position",
+          "observed": "Boards are substantially different. Only the center square 'Gets nerdsniped' is the same (fixed position). Multiple other squares differ — e.g., alpha row1 col1='Gets trolled by his team' vs beta row1 col1='Reviews a viewer's PR'"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/board-gen-core/VAL-BG-002-seed-alpha.png",
+          "bingo-game/board-gen-core/VAL-BG-002-seed-beta.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /game?seed=alpha -> 200, GET /game?seed=beta -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-BG-003",
+      "title": "Board contains exactly 25 squares",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "DOM query: count all button elements and filter out 'New Game' and 'Share'",
+          "expected": "25 square buttons",
+          "observed": "27 total buttons on page; 25 are board squares (2 are 'New Game' and 'Share')"
+        },
+        {
+          "action": "DOM query: check grid container structure",
+          "expected": "Grid container with 25 children, class grid-cols-5",
+          "observed": "Grid container is a DIV with class 'grid grid-cols-5 gap-1 sm:gap-2' containing exactly 25 children (5 rows × 5 columns)"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/board-gen-core/VAL-BG-003-full-grid.png"
+        ],
+        "consoleErrors": "none",
+        "domQuery": "buttonCount=27, squareButtonCount=25, gridInfo={tag:'DIV', className:'grid grid-cols-5 gap-1 sm:gap-2', childCount:25}"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-BG-004",
+      "title": "Center square reads \"Gets nerdsniped\"",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Extract text from button at index 12 (row 3, col 3 — center of 5×5 grid)",
+          "expected": "Text contains 'Gets nerdsniped'",
+          "observed": "Button at index 12 (row 3, col 3) contains text 'Gets nerdsniped'"
+        },
+        {
+          "action": "Verify center square is NOT 'Free' or 'FREE SPACE'",
+          "expected": "Text is not 'Free' or 'FREE SPACE'",
+          "observed": "Text is 'Gets nerdsniped' — confirmed not 'Free' or 'FREE SPACE'"
+        },
+        {
+          "action": "Verify center square is consistent across different seeds",
+          "expected": "Center square always shows 'Gets nerdsniped'",
+          "observed": "Center square is 'Gets nerdsniped' on seed=testseed123, seed=alpha, seed=beta, seed=crossdevice, seed=hello42 — all tested seeds produce 'Gets nerdsniped' at center"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/board-gen-core/VAL-BG-001-first-open.png",
+          "bingo-game/board-gen-core/VAL-BG-002-seed-alpha.png"
+        ],
+        "consoleErrors": "none",
+        "domInspection": "Center cell (index 12, row 3 col 3) text = 'Gets nerdsniped' across all tested seeds"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-BG-005",
+      "title": "All 25 squares contain non-empty text",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Extract all 25 square texts via DOM query and check for empty strings",
+          "expected": "All 25 squares have non-empty, human-readable text",
+          "observed": "All 25 squares contain non-empty text. Each label is a distinct, human-readable phrase describing a Theo moment. No blank squares, no loading placeholders."
+        },
+        {
+          "action": "Verify all texts are distinct",
+          "expected": "Each of the 25 labels is unique",
+          "observed": "All 25 square texts are distinct phrases — no duplicates found (verified for seed=testseed123)"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/board-gen-core/VAL-BG-003-full-grid.png"
+        ],
+        "consoleErrors": "none",
+        "domQuery": "allNonEmpty=true, squareTexts=[\"Says \\\"this is actually really simple\\\" about something complex\",\"Talks about his streaming setup\",\"Starts a side project on stream\",\"Mentions t3.gg\",\"Brings up the state of web development\",\"Hasn't had time to do his hair\",\"Talks about AI coding assistants\",\"Shows off a keyboard or mechanical keyboard take\",\"Roasts a tech startup\",\"Gets emotional about open source\",\"Does the \\\"don't credit me, you did all the work\\\" thing\",\"Mentions cargo culting\",\"Gets nerdsniped\",\"Accidentally closes the wrong tab\",\"Does the \\\"I'm not mad, I'm just disappointed\\\" look\",\"Brings up the fountain again\",\"Mentions \\\"golden path\\\"\",\"Goes on an extended skateboard tangent\",\"Leaks his email / API key\",\"Argues with chat about tabs vs spaces\",\"Discusses Vercel or Next.js\",\"Talks about how bad most software is\",\"Someone builds something for Theo and he falls in love\",\"Goes on a tangent about design/UX\",\"Debates hiring someone live on stream\"]"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-BG-006",
+      "title": "Squares are drawn from the predefined item pool",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Read the known item pool from src/lib/items.ts (45 items including center item)",
+          "expected": "Pool contains ~45 curated Theo moment strings",
+          "observed": "Pool contains 45 items (1 CENTER_ITEM + 44 others) in BINGO_ITEMS array"
+        },
+        {
+          "action": "Extract all 25 square texts from board (seed=testseed123) and compare against pool",
+          "expected": "All 25 texts match entries in the known pool",
+          "observed": "All 25 square texts match entries in BINGO_ITEMS pool. No garbage text, no placeholder strings like 'Item 1', no empty strings found."
+        },
+        {
+          "action": "Verify across multiple seeds (alpha, beta)",
+          "expected": "All squares across all tested seeds match the pool",
+          "observed": "All square texts from seed=alpha and seed=beta boards also match entries in the BINGO_ITEMS pool"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/board-gen-core/VAL-BG-001-first-open.png"
+        ],
+        "consoleErrors": "none",
+        "poolComparison": "All 25 texts from seed=testseed123, seed=alpha, seed=beta verified against BINGO_ITEMS in src/lib/items.ts — all match known pool entries"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-XF-004",
+      "title": "Direct URL navigation to game page works",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Navigate directly to http://localhost:3000/game?seed=hello42",
+          "expected": "Page loads with a valid board, no redirect, no error, no blank page",
+          "observed": "Page loads successfully with title 't3ingo — Playing', URL remains /game?seed=hello42, board renders with 25 squares"
+        },
+        {
+          "action": "Verify board is valid",
+          "expected": "25 squares with non-empty text, center is 'Gets nerdsniped'",
+          "observed": "squareCount=25, allNonEmpty=true, center square='Gets nerdsniped'"
+        },
+        {
+          "action": "Check for console errors",
+          "expected": "No errors in console",
+          "observed": "No console errors"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/board-gen-core/VAL-XF-004-direct-url.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /game?seed=hello42 -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-XF-007",
+      "title": "Deep link sharing between devices",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Set viewport to desktop (1440x900) and navigate to /game?seed=crossdevice",
+          "expected": "Board renders with 25 squares",
+          "observed": "Board renders at 1440x900 with 25 squares"
+        },
+        {
+          "action": "Extract all 25 square texts from desktop viewport",
+          "expected": "List of 25 text strings",
+          "observed": "[\"References a previous stream or video\",\"Roasts a tech startup\",\"Gets distracted by chat and forgets what he was doing\",\"Reviews a viewer's PR\",\"Does the \\\"don't credit me, you did all the work\\\" thing\",\"Mentions cargo culting\",\"Gets emotional about open source\",\"Calls a viewer \\\"motherfucker\\\"\",\"Goes on an extended skateboard tangent\",\"Talks about AI coding assistants\",\"Mentions living in San Francisco\",\"Goes on a tangent about design/UX\",\"Gets nerdsniped\",\"Talks about his streaming setup\",\"Starts a side project on stream\",\"Debates hiring someone live on stream\",\"Says \\\"this is actually really simple\\\" about something complex\",\"Argues with chat about tabs vs spaces\",\"Shows off a keyboard or mechanical keyboard take\",\"Rants about TypeScript for 5+ minutes\",\"Gets excited about a new framework then abandons it\",\"Goes \\\"WHAT THE FUCK!?!\\\" at some company\",\"Talks about how bad most software is\",\"Says something self-deprecating about his coding speed\",\"Does the \\\"I'm not mad, I'm just disappointed\\\" look\"]"
+        },
+        {
+          "action": "Set viewport to mobile (375x667) and reload same URL",
+          "expected": "Board shows same squares in same positions",
+          "observed": "Board text is identical at 375x667 — all 25 squares have exactly the same text in exactly the same positions as desktop viewport"
+        },
+        {
+          "action": "Compare desktop and mobile board texts",
+          "expected": "Identical text arrays",
+          "observed": "Desktop and mobile board text arrays are exactly identical. Seed determinism holds across viewport sizes."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/board-gen-core/VAL-XF-007-desktop-1440x900.png",
+          "bingo-game/board-gen-core/VAL-XF-007-mobile-375x667.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /game?seed=crossdevice -> 200 (both viewports)"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 8 assertions: all 8 passed. Board generation is fully deterministic with seed-based PRNG. Center square always reads 'Gets nerdsniped'. All squares come from the known 45-item pool. Direct URL navigation works without errors. Seed determinism holds across viewport sizes (desktop 1440x900 and mobile 375x667)."
+}

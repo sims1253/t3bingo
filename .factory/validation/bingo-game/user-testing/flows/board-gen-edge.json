@@ -1,0 +1,136 @@
+{
+  "groupId": "board-gen-edge",
+  "testedAt": "2026-04-08T00:00:00Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "session": "4564b48db884__bgedge",
+    "tool": "agent-browser"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-BG-007",
+      "title": "Board generation handles edge-case seed values",
+      "status": "fail",
+      "steps": [
+        { "action": "Navigate to /game?seed=0", "expected": "Valid 25-square board rendered", "observed": "Error: 'Invalid input: expected string, received number' — Zod validation rejects numeric seed value" },
+        { "action": "Navigate to /game?seed=1", "expected": "Valid 25-square board rendered", "observed": "Error: 'Invalid input: expected string, received number' — same Zod type mismatch" },
+        { "action": "Navigate to /game?seed=a", "expected": "Valid 25-square board rendered", "observed": "Valid 25-square board rendered successfully with all items populated" },
+        { "action": "Navigate to /game?seed=00000", "expected": "Valid 25-square board rendered", "observed": "Valid 25-square board rendered successfully (string '00000' accepted)" },
+        { "action": "Navigate to /game?seed=%20", "expected": "Valid 25-square board rendered", "observed": "Valid 25-square board rendered successfully (seed is a space character)" },
+        { "action": "Navigate to /game?seed=verylongstringthatgoesonandonandonandonandonandonandonandonandonandon", "expected": "Valid 25-square board rendered", "observed": "Valid 25-square board rendered successfully with long seed" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/board-gen-edge/VAL-BG-007-seed-0.png",
+          "bingo-game/board-gen-edge/VAL-BG-007-seed-1.png",
+          "bingo-game/board-gen-edge/VAL-BG-007-seed-a.png",
+          "bingo-game/board-gen-edge/VAL-BG-007-seed-00000.png",
+          "bingo-game/board-gen-edge/VAL-BG-007-seed-space.png",
+          "bingo-game/board-gen-edge/VAL-BG-007-seed-verylong.png"
+        ],
+        "consoleErrors": "seed=0 and seed=1 produce Zod validation error: 'Invalid input: expected string, received number'. The seed query param is parsed as a number by TanStack Router/Zod when the value is purely numeric (0, 1). Other seeds render without error.",
+        "network": "All requests returned HTTP 200"
+      },
+      "issues": "seed=0 and seed=1 fail because the Zod schema for seed validates as string, but TanStack Router's query param parsing coerces purely numeric values to numbers. Seeds '00000', 'a', space, and long strings work fine because they are parsed as strings."
+    },
+    {
+      "id": "VAL-BG-008",
+      "title": "No seed parameter shows graceful behavior",
+      "status": "fail",
+      "steps": [
+        { "action": "Navigate to /game (no seed param)", "expected": "Redirects to seeded URL or shows landing page or default board, no crash", "observed": "Redirects to /game?seed=r2j977obmY (random seed) but then shows React error: 'Rendered more hooks than during the previous render'" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/board-gen-edge/VAL-BG-008-no-seed.png"
+        ],
+        "consoleErrors": "React error: 'Rendered more hooks than during the previous render' — the redirect from /game to /game?seed=XXXXX triggers a hooks mismatch",
+        "network": "HTTP 200 for /game, then redirect to /game?seed=r2j977obmY"
+      },
+      "issues": "The redirect to a seeded URL does occur, but the React component re-renders with a different hooks count after the redirect, causing a crash. The user sees 'Something went wrong!' error overlay instead of a usable board."
+    },
+    {
+      "id": "VAL-BG-009",
+      "title": "Empty seed parameter shows graceful behavior",
+      "status": "fail",
+      "steps": [
+        { "action": "Navigate to /game?seed= (empty seed value)", "expected": "Valid board renders or redirect gracefully", "observed": "Redirects to /game?seed=g4ai6qowNz (random seed) but then shows React error: 'Rendered more hooks than during the previous render'" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/board-gen-edge/VAL-BG-009-empty-seed.png"
+        ],
+        "consoleErrors": "Same React hooks error as VAL-BG-008: 'Rendered more hooks than during the previous render'",
+        "network": "HTTP 200 for /game?seed=, then redirect to /game?seed=g4ai6qowNz"
+      },
+      "issues": "Same root cause as VAL-BG-008 — empty seed triggers redirect to random seed, but React hooks mismatch causes crash."
+    },
+    {
+      "id": "VAL-BG-010",
+      "title": "Special characters in seed do not crash",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /game?seed=%3Cscript%3Ealert(1)%3C%2Fscript%3E", "expected": "Valid board, no XSS, no alert dialog", "observed": "Valid 25-square board rendered. Seed displays as '<script>alert(1)</script>' in text — not executed. No alert dialog appeared." }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/board-gen-edge/VAL-BG-010-xss.png"
+        ],
+        "consoleErrors": "none",
+        "network": "HTTP 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-BG-011",
+      "title": "Seed survives URL encoding/decoding round-trip",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /game?seed=hello%20world (encoded space)", "expected": "Valid board with seed 'hello world'", "observed": "Valid 25-square board rendered with seed 'hello world'" },
+        { "action": "Navigate to /game?seed=hello+world (+ as space)", "expected": "Same board as hello%20world", "observed": "Identical board to hello%20world — same 25 items in same positions" },
+        { "action": "Navigate to /game?seed=abc%2Bdef (encoded plus)", "expected": "Valid board with seed 'abc+def'", "observed": "Valid 25-square board rendered with seed 'abc+def'" },
+        { "action": "Navigate to /game?seed=abc+def (+ decoded as space)", "expected": "Different board from abc%2Bdef (different seed string)", "observed": "Different board from abc%2Bdef, as expected — '+' decodes to space in query params, yielding seed 'abc def'" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/board-gen-edge/VAL-BG-011-encoded.png",
+          "bingo-game/board-gen-edge/VAL-BG-011-plus.png",
+          "bingo-game/board-gen-edge/VAL-BG-011-abc-encoded.png",
+          "bingo-game/board-gen-edge/VAL-BG-011-abc-plus.png"
+        ],
+        "consoleErrors": "none",
+        "network": "All HTTP 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-BG-012",
+      "title": "Unicode seed values produce valid boards",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /game?seed=🎮 (URL-encoded as %F0%9F%8E%AE)", "expected": "Valid 25-square board, no crash", "observed": "Valid 25-square board rendered. Seed displays as '🎮'. No errors." },
+        { "action": "Navigate to /game?seed=café (URL-encoded as caf%C3%A9)", "expected": "Valid 25-square board, no crash", "observed": "Valid 25-square board rendered. Seed displays as 'café'. No errors." }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/board-gen-edge/VAL-BG-012-emoji.png",
+          "bingo-game/board-gen-edge/VAL-BG-012-cafe.png"
+        ],
+        "consoleErrors": "none",
+        "network": "All HTTP 200"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "networkidle wait times out on the dev server due to Vite HMR WebSocket. Used sleep 2000 after navigation instead of --load networkidle as documented in user-testing.md.",
+      "resolved": true,
+      "resolution": "Used sleep 2000 (2-second wait) after each navigation, which was sufficient for all pages to fully render.",
+      "affectedAssertions": ["VAL-BG-007", "VAL-BG-008", "VAL-BG-009", "VAL-BG-010", "VAL-BG-011", "VAL-BG-012"]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 6 assertions: 3 passed (VAL-BG-010, VAL-BG-011, VAL-BG-012), 3 failed. VAL-BG-007 fails because numeric seeds (0, 1) are coerced to numbers by TanStack Router but the Zod schema expects strings — seeds 'a', '00000', space, and long string all work. VAL-BG-008 and VAL-BG-009 fail because the redirect to a random seed triggers a React hooks mismatch error ('Rendered more hooks than during the previous render')."
+}

@@ -1,0 +1,153 @@
+{
+  "groupId": "square-marking-persist",
+  "testedAt": "2026-04-08T00:51:00Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "session": "4564b48db884__smpers",
+    "seed": "testpersist",
+    "tool": "agent-browser"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-SM-007",
+      "title": "Center square \"Gets nerdsniped\" is markable like any other square",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /game?seed=testpersist", "expected": "Board renders with center square unmarked", "observed": "Center square 'Gets nerdsniped' rendered with aria-pressed=\"false\", no checkmark, plain background" },
+        { "action": "Click center square (ref=e13)", "expected": "Square becomes visually marked", "observed": "Square marked: ✓ prefix appeared, aria-pressed=\"true\", background changed to bg-[var(--lagoon)]/20" },
+        { "action": "Click center square again (ref=e13)", "expected": "Square returns to unmarked state", "observed": "Square unmarked: ✓ removed, aria-pressed=\"false\"" }
+      ],
+      "evidence": {
+        "screenshots": ["bingo-game/square-marking-persist/VAL-SM-007-center-unmarked.png", "bingo-game/square-marking-persist/VAL-SM-007-center-marked.png", "bingo-game/square-marking-persist/VAL-SM-007-center-unmarked-again.png"],
+        "consoleErrors": "none (on initial load)",
+        "network": "n/a — client-side state only"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SM-008",
+      "title": "Mark state survives page refresh",
+      "status": "pass",
+      "steps": [
+        { "action": "Mark 6 squares (e1, e3, e5, e13, e20, e25)", "expected": "6 squares marked", "observed": "6 squares marked: Reviews a viewer's PR, Mentions living in San Francisco, Roasts a tech startup, Gets nerdsniped, Gets emotional about open source, Rants about TypeScript for 5+ minutes" },
+        { "action": "Reload page (F5)", "expected": "All 6 squares still marked after refresh", "observed": "All 6 squares still marked with identical state after refresh" }
+      ],
+      "evidence": {
+        "screenshots": ["bingo-game/square-marking-persist/VAL-SM-008-before-refresh.png", "bingo-game/square-marking-persist/VAL-SM-008-after-refresh.png"],
+        "consoleErrors": "Hydration mismatch warnings on game page (SSR renders all squares unmarked, client hydrates with sessionStorage marks). Functional behavior is correct — React re-renders with correct state.",
+        "network": "GET /game?seed=testpersist -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SM-009",
+      "title": "Mark state survives browser back/forward",
+      "status": "pass",
+      "steps": [
+        { "action": "Set up history: navigate to / then to /game?seed=testpersist, mark 6 squares", "expected": "6 squares marked on game page", "observed": "6 squares marked (marks persisted from sessionStorage even after navigation)" },
+        { "action": "Press browser Back", "expected": "Navigate to landing page /", "observed": "Navigated to http://localhost:3000/" },
+        { "action": "Press browser Forward", "expected": "Return to game page with all marks preserved", "observed": "Returned to http://localhost:3000/game?seed=testpersist with all 6 squares still marked" }
+      ],
+      "evidence": {
+        "screenshots": ["bingo-game/square-marking-persist/VAL-SM-009-marked-board.png", "bingo-game/square-marking-persist/VAL-SM-009-after-back-landing.png", "bingo-game/square-marking-persist/VAL-SM-009-after-forward-game.png"],
+        "consoleErrors": "Hydration mismatch warnings (same as VAL-SM-008)",
+        "network": "n/a — client-side navigation"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SM-010",
+      "title": "Marking does not alter the URL seed",
+      "status": "pass",
+      "steps": [
+        { "action": "Capture URL before clicking a square", "expected": "URL contains seed=testpersist", "observed": "URL is http://localhost:3000/game?seed=testpersist" },
+        { "action": "Click square e3 to mark it", "expected": "Square marked, URL unchanged", "observed": "Square marked, URL still http://localhost:3000/game?seed=testpersist" },
+        { "action": "Verify URL after click", "expected": "Seed parameter unchanged", "observed": "URL is http://localhost:3000/game?seed=testpersist — identical" }
+      ],
+      "evidence": {
+        "screenshots": ["bingo-game/square-marking-persist/VAL-SM-010-url-before-click.png", "bingo-game/square-marking-persist/VAL-SM-010-url-after-click.png"],
+        "consoleErrors": "none",
+        "network": "n/a — client-side state only"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SM-011",
+      "title": "Hover state gives visual feedback",
+      "status": "pass",
+      "steps": [
+        { "action": "Inspect unmarked square (e2) styles at rest", "expected": "Default background", "observed": "background: rgba(255, 255, 255, 0.74) — white/transparent" },
+        { "action": "Hover over square (e2)", "expected": "Visual change indicating interactivity", "observed": "background: rgba(79, 184, 178, 0.12) — teal/lagoon tinted, plus the CSS class includes hover:bg-[var(--lagoon)]/30 and hover:border-[var(--lagoon-deep)]" }
+      ],
+      "evidence": {
+        "screenshots": ["bingo-game/square-marking-persist/VAL-SM-011-no-hover.png", "bingo-game/square-marking-persist/VAL-SM-011-with-hover.png"],
+        "consoleErrors": "none",
+        "network": "n/a — client-side CSS only"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-XF-003",
+      "title": "Browser back/forward preserves game state",
+      "status": "pass",
+      "steps": [
+        { "action": "On game page with 6 marked squares, press Back", "expected": "Navigate to landing page", "observed": "Navigated to http://localhost:3000/" },
+        { "action": "Press Forward", "expected": "Return to game page with all marks preserved", "observed": "All 6 squares still marked: Reviews a viewer's PR, Mentions living in San Francisco, Roasts a tech startup, Gets nerdsniped, Gets emotional about open source, Rants about TypeScript for 5+ minutes" }
+      ],
+      "evidence": {
+        "screenshots": ["bingo-game/square-marking-persist/VAL-SM-009-marked-board.png", "bingo-game/square-marking-persist/VAL-SM-009-after-back-landing.png", "bingo-game/square-marking-persist/VAL-SM-009-after-forward-game.png"],
+        "consoleErrors": "Hydration mismatch warnings (SSR vs client state)",
+        "network": "n/a — client-side navigation"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-XF-010",
+      "title": "Page reload mid-game preserves state",
+      "status": "pass",
+      "steps": [
+        { "action": "Mark 7 squares on game page", "expected": "7 squares marked", "observed": "7 squares marked: Reviews a viewer's PR, Mentions living in San Francisco, Roasts a tech startup, Goes on an extended skateboard tangent, Gets nerdsniped, Gets emotional about open source, Rants about TypeScript for 5+ minutes" },
+        { "action": "Hard refresh (Ctrl+Shift+R)", "expected": "All 7 squares still marked after hard refresh", "observed": "All 7 squares still marked with identical state" }
+      ],
+      "evidence": {
+        "screenshots": ["bingo-game/square-marking-persist/VAL-XF-010-before-hard-refresh.png", "bingo-game/square-marking-persist/VAL-XF-010-after-hard-refresh.png"],
+        "consoleErrors": "Hydration mismatch warnings (SSR vs client state)",
+        "network": "GET /game?seed=testpersist -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-XF-012",
+      "title": "Concurrent tabs with same seed",
+      "status": "pass",
+      "steps": [
+        { "action": "Open /game?seed=sametest in Tab A (session 4564b48db884__smpers), mark 3 squares (e1, e5, e13)", "expected": "3 squares marked in Tab A", "observed": "3 squares marked: Gets excited about a new framework then abandons it, Leaks his email / API key, Gets nerdsniped" },
+        { "action": "Open /game?seed=sametest in Tab B (session 4564b48db884__smpers_tab_b)", "expected": "Same board layout, all squares unmarked", "observed": "Same board layout (verified by comparing square text arrays), 0 squares marked (aria-pressed=true array is empty)" },
+        { "action": "Mark a square in Tab B (e2)", "expected": "Tab A unaffected", "observed": "Tab A still shows only the original 3 marked squares — Tab B's mark did not affect Tab A" }
+      ],
+      "evidence": {
+        "screenshots": ["bingo-game/square-marking-persist/VAL-XF-012-tab-a-3-marks.png", "bingo-game/square-marking-persist/VAL-XF-012-tab-b-no-marks.png", "bingo-game/square-marking-persist/VAL-XF-012-tab-b-independently-marked.png"],
+        "consoleErrors": "none in Tab B (fresh session)",
+        "network": "GET /game?seed=sametest -> 200 (both tabs)"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "Session started directly on game page — no prior history for back navigation test (VAL-SM-009). Had to navigate to landing page first then game page to build proper browser history.",
+      "resolved": true,
+      "resolution": "Navigated to / first, then to /game?seed=testpersist to establish history before testing back/forward",
+      "affectedAssertions": ["VAL-SM-009", "VAL-XF-003"]
+    },
+    {
+      "description": "Hydration mismatch warnings appear when page loads with previously marked squares in sessionStorage. Server renders all squares as unmarked, client hydrates with marked state from sessionStorage, causing React hydration mismatch.",
+      "resolved": false,
+      "resolution": "Functional behavior is correct (React re-renders client-side), but the SSR markup doesn't account for sessionStorage state. This is a cosmetic/warning issue, not a functional bug.",
+      "affectedAssertions": ["VAL-SM-008", "VAL-SM-009", "VAL-XF-003", "VAL-XF-010"]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 8 assertions: all 8 passed. Hydration mismatch warnings noted on game pages with persisted marks (SSR renders unmarked, client hydrates with sessionStorage marks), but functional behavior is correct for all persistence and marking features."
+}

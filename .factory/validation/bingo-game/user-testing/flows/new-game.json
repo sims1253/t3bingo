@@ -1,0 +1,213 @@
+{
+  "groupId": "new-game",
+  "testedAt": "2026-04-08T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "agentBrowserSession": "4564b48db884__newgame",
+    "seed": "newgametest"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-NG-001",
+      "title": "\"New Game\" button generates a new seed",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Navigate to /game?seed=newgametest",
+          "expected": "Game page loads with seed=newgametest",
+          "observed": "Page loaded at http://localhost:3000/game?seed=newgametest"
+        },
+        {
+          "action": "Click \"New Game\" button (ref=e26)",
+          "expected": "URL changes to /game?seed=YYYYY with a different seed",
+          "observed": "URL changed to http://localhost:3000/game?seed=gxacd4veMe — seed differs from 'newgametest'"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/new-game/VAL-NG-001-initial-board.png",
+          "bingo-game/new-game/VAL-NG-001-after-newgame.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Client-side navigation, no API requests"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NG-002",
+      "title": "New game board differs from previous board",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Record board text for seed=newgametest",
+          "expected": "Board has 25 squares with specific text",
+          "observed": "First board: [\"Mentions how much he loves his team\", \"Says \\\"this is actually really simple\\\" about something complex\", \"Goes on a tangent about design/UX\", ...]"
+        },
+        {
+          "action": "Click \"New Game\" and record new board text",
+          "expected": "New board has different text or positions",
+          "observed": "New board: [\"Rants about TypeScript for 5+ minutes\", \"Crashes out over Anthropic\", \"Switches between 3+ editor windows rapidly\", ...] — completely different board"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/new-game/VAL-NG-001-initial-board.png",
+          "bingo-game/new-game/VAL-NG-002-new-board.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Client-side navigation"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NG-003",
+      "title": "New game starts with all squares unmarked",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "After clicking \"New Game\", check aria-pressed state of all 25 squares",
+          "expected": "All 25 squares have aria-pressed=\"false\"",
+          "observed": "All 25 squares have aria-pressed=\"false\" and default CSS classes (no marked state)"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/new-game/VAL-NG-002-new-board.png"
+        ],
+        "consoleErrors": "none",
+        "network": "None"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NG-004",
+      "title": "New game does not show celebration",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "After clicking \"New Game\", check for celebration elements in DOM",
+          "expected": "No celebration/confetti/canvas elements present, no BINGO text in body",
+          "observed": "bingoElements: 0, canvasElements: 0, bodyHTML contains 'celebration'/'confetti'/'BINGO': false"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/new-game/VAL-NG-004-no-celebration.png"
+        ],
+        "consoleErrors": "none",
+        "network": "None"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NG-005",
+      "title": "\"New Game\" can be clicked multiple times in succession",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Click \"New Game\" 3 times in rapid succession (with 500ms waits between)",
+          "expected": "Each click produces a valid board with a valid seed; no crash",
+          "observed": "Three clicks produced three different boards: 1st has 'Crashes out over Anthropic', 2nd has 'Roasts a tech startup', 3rd at seed=CiopkKhH5N. Final URL: http://localhost:3000/game?seed=CiopkKhH5N"
+        },
+        {
+          "action": "Verify final board has 25 valid unmarked squares",
+          "expected": "25 squares, all unmarked",
+          "observed": "squareCount: 25, allSquaresUnmarked: true"
+        },
+        {
+          "action": "Check for console errors",
+          "expected": "No console errors",
+          "observed": "No console errors"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/new-game/VAL-NG-005-after-rapid-clicks.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Client-side navigations"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NG-006",
+      "title": "Previous game is not accessible via back button state corruption",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "After rapid New Game clicks, press browser back button",
+          "expected": "Returns to a valid previous state (previous game board or landing page)",
+          "observed": "Navigated back to http://localhost:3000/game?seed=opbR2Evest — a valid previous game board"
+        },
+        {
+          "action": "Verify page is not broken or corrupted",
+          "expected": "Valid board with 25 readable squares, no errors",
+          "observed": "squareCount: 25, hasValidBoard: true, pageText shows valid board content. No console errors."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/new-game/VAL-NG-006-after-back-button.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Client-side back navigation"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NG-007",
+      "title": "\"New Game\" is accessible from bingo state",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Navigate to /game?seed=newgametest, clear sessionStorage, reload",
+          "expected": "Clean unmarked board",
+          "observed": "Board loaded with 0 marked squares"
+        },
+        {
+          "action": "Mark all 5 squares in first row (indices 0-4) using dispatchEvent",
+          "expected": "Bingo celebration triggers",
+          "observed": "hasConfetti: true, bodyIncludesBingo: true, celebrationElements: 1"
+        },
+        {
+          "action": "Click \"New Game\" button while celebration is active (via JS .click())",
+          "expected": "Celebration clears, new unmarked board loads with new seed",
+          "observed": "URL changed to http://localhost:3000/game?seed=ZnjhjBEi4I. hasConfetti: false, bodyIncludesBingo: false, celebrationElements: 0, hasCanvas: 0, markedCount: 0, squareCount: 25, allSquaresValid: true"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/new-game/VAL-NG-007-initial-board.png",
+          "bingo-game/new-game/VAL-NG-007-bingo-celebration.png",
+          "bingo-game/new-game/VAL-NG-007-after-newgame-from-bingo.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Client-side navigation"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "Playwright click commands timeout when trying to click squares after the first click on the board. The first square click succeeds but subsequent clicks on adjacent squares time out with 'Action timed out. The element may be blocked, still loading, or not interactable.' This occurs even when no celebration is active (only 1 square marked). Workaround: use JavaScript dispatchEvent or .click() to mark squares.",
+      "resolved": true,
+      "resolution": "Used document.querySelectorAll('button')[i].dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true})) to click squares, and native .click() for the New Game button",
+      "affectedAssertions": ["VAL-NG-007"]
+    },
+    {
+      "description": "networkidle wait times out on the dev server as documented in user-testing.md. Used sleep 2000 or domcontentloaded instead.",
+      "resolved": true,
+      "resolution": "Used 'agent-browser wait 2000' instead of '--load networkidle'",
+      "affectedAssertions": ["VAL-NG-001", "VAL-NG-002", "VAL-NG-003", "VAL-NG-004", "VAL-NG-005", "VAL-NG-006", "VAL-NG-007"]
+    },
+    {
+      "description": "sessionStorage accumulated keys from multiple game navigations during testing. Cleared sessionStorage before VAL-NG-007 to ensure clean state for bingo trigger test.",
+      "resolved": true,
+      "resolution": "Ran sessionStorage.clear() and reloaded the page before marking squares for bingo",
+      "affectedAssertions": ["VAL-NG-007"]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 7 assertions: all 7 passed. VAL-NG-001 (new seed), VAL-NG-002 (different board), VAL-NG-003 (unmarked squares), VAL-NG-004 (no celebration), VAL-NG-005 (rapid clicks), VAL-NG-006 (back button), VAL-NG-007 (new game from bingo state). Main friction: Playwright click timeouts on squares required JavaScript dispatchEvent workaround."
+}

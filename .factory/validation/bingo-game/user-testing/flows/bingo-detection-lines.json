@@ -1,0 +1,181 @@
+{
+  "groupId": "bingo-detection-lines",
+  "testedAt": "2026-04-08T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "sessionName": "4564b48db884__bilines",
+    "seed": "bingotest",
+    "tool": "agent-browser"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-BI-001",
+      "title": "Complete top row triggers bingo",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear sessionStorage and navigate to /game?seed=bingotest", "expected": "Fresh unmarked board displayed", "observed": "Fresh unmarked board displayed with 25 squares" },
+        { "action": "Mark first 4 squares of row 1 (indices 0-3) via JS click", "expected": "4 squares marked, no bingo yet", "observed": "4 squares visually marked (pressed state), no BINGO heading" },
+        { "action": "Mark 5th square of row 1 (index 4) via JS click", "expected": "Bingo/celebration triggered", "observed": "🎉 BINGO! 🎉 heading appeared, celebration effect visible" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/bingo-detection-lines/VAL-BI-001-top-row-4-marked.png",
+          "bingo-game/bingo-detection-lines/VAL-BI-001-top-row-bingo.png"
+        ],
+        "consoleErrors": "none",
+        "network": "n/a (client-side state only)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-BI-002",
+      "title": "Complete middle row triggers bingo",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear sessionStorage and navigate to /game?seed=bingotest", "expected": "Fresh unmarked board displayed", "observed": "Fresh unmarked board displayed" },
+        { "action": "Mark first 4 squares of row 3 (indices 10-13) via JS click", "expected": "4 squares marked, no bingo yet", "observed": "4 squares visually marked (pressed state), no BINGO heading" },
+        { "action": "Mark 5th square of row 3 (index 14) via JS click", "expected": "Bingo/celebration triggered", "observed": "🎉 BINGO! 🎉 heading appeared, celebration effect visible" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/bingo-detection-lines/VAL-BI-002-mid-row-4-marked.png",
+          "bingo-game/bingo-detection-lines/VAL-BI-002-mid-row-bingo.png"
+        ],
+        "consoleErrors": "none",
+        "network": "n/a (client-side state only)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-BI-003",
+      "title": "Complete bottom row triggers bingo",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear sessionStorage and navigate to /game?seed=bingotest", "expected": "Fresh unmarked board displayed", "observed": "Fresh unmarked board displayed" },
+        { "action": "Mark first 4 squares of row 5 (indices 20-23) via JS click", "expected": "4 squares marked, no bingo yet", "observed": "4 squares visually marked (pressed state), no BINGO heading" },
+        { "action": "Mark 5th square of row 5 (index 24) via JS click", "expected": "Bingo/celebration triggered", "observed": "🎉 BINGO! 🎉 heading appeared, celebration effect visible" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/bingo-detection-lines/VAL-BI-003-bottom-row-4-marked.png",
+          "bingo-game/bingo-detection-lines/VAL-BI-003-bottom-row-bingo.png"
+        ],
+        "consoleErrors": "none",
+        "network": "n/a (client-side state only)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-BI-004",
+      "title": "Complete first column triggers bingo",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear sessionStorage and navigate to /game?seed=bingotest", "expected": "Fresh unmarked board displayed", "observed": "Fresh unmarked board displayed" },
+        { "action": "Mark first 4 squares of column 1 (indices 0,5,10,15) via JS click", "expected": "4 squares marked, no bingo yet", "observed": "4 squares visually marked (pressed state), no BINGO heading" },
+        { "action": "Mark 5th square of column 1 (index 20) via JS click", "expected": "Bingo/celebration triggered", "observed": "🎉 BINGO! 🎉 heading appeared, celebration effect visible" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/bingo-detection-lines/VAL-BI-004-col1-4-marked.png",
+          "bingo-game/bingo-detection-lines/VAL-BI-004-col1-bingo.png"
+        ],
+        "consoleErrors": "none",
+        "network": "n/a (client-side state only)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-BI-005",
+      "title": "Complete middle column triggers bingo",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear sessionStorage and navigate to /game?seed=bingotest", "expected": "Fresh unmarked board displayed", "observed": "Fresh unmarked board displayed" },
+        { "action": "Mark first 4 squares of column 3 (indices 2,7,12,17) via JS click", "expected": "4 squares marked, no bingo yet", "observed": "4 squares visually marked (pressed state), no BINGO heading" },
+        { "action": "Mark 5th square of column 3 (index 22) via JS click", "expected": "Bingo/celebration triggered", "observed": "🎉 BINGO! 🎉 heading appeared, celebration effect visible" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/bingo-detection-lines/VAL-BI-005-col3-4-marked.png",
+          "bingo-game/bingo-detection-lines/VAL-BI-005-col3-bingo.png"
+        ],
+        "consoleErrors": "none",
+        "network": "n/a (client-side state only)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-BI-006",
+      "title": "Complete last column triggers bingo",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear sessionStorage and navigate to /game?seed=bingotest", "expected": "Fresh unmarked board displayed", "observed": "Fresh unmarked board displayed" },
+        { "action": "Mark first 4 squares of column 5 (indices 4,9,14,19) via JS click", "expected": "4 squares marked, no bingo yet", "observed": "4 squares visually marked (pressed state), no BINGO heading" },
+        { "action": "Mark 5th square of column 5 (index 24) via JS click", "expected": "Bingo/celebration triggered", "observed": "🎉 BINGO! 🎉 heading appeared, celebration effect visible" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/bingo-detection-lines/VAL-BI-006-col5-4-marked.png",
+          "bingo-game/bingo-detection-lines/VAL-BI-006-col5-bingo.png"
+        ],
+        "consoleErrors": "none",
+        "network": "n/a (client-side state only)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-BI-007",
+      "title": "Complete main diagonal (top-left to bottom-right) triggers bingo",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear sessionStorage and navigate to /game?seed=bingotest", "expected": "Fresh unmarked board displayed", "observed": "Fresh unmarked board displayed" },
+        { "action": "Mark first 4 squares of main diagonal (indices 0,6,12,18) via JS click", "expected": "4 squares marked, no bingo yet", "observed": "4 squares visually marked (pressed state), no BINGO heading" },
+        { "action": "Mark 5th square of main diagonal (index 24) via JS click", "expected": "Bingo/celebration triggered", "observed": "🎉 BINGO! 🎉 heading appeared, celebration effect visible" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/bingo-detection-lines/VAL-BI-007-diag-main-4-marked.png",
+          "bingo-game/bingo-detection-lines/VAL-BI-007-diag-main-bingo.png"
+        ],
+        "consoleErrors": "none",
+        "network": "n/a (client-side state only)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-BI-008",
+      "title": "Complete anti-diagonal (top-right to bottom-left) triggers bingo",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear sessionStorage and navigate to /game?seed=bingotest", "expected": "Fresh unmarked board displayed", "observed": "Fresh unmarked board displayed" },
+        { "action": "Mark first 4 squares of anti-diagonal (indices 4,8,12,16) via JS click", "expected": "4 squares marked, no bingo yet", "observed": "4 squares visually marked (pressed state), no BINGO heading" },
+        { "action": "Mark 5th square of anti-diagonal (index 20) via JS click", "expected": "Bingo/celebration triggered", "observed": "🎉 BINGO! 🎉 heading appeared, celebration effect visible" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "bingo-game/bingo-detection-lines/VAL-BI-008-diag-anti-4-marked.png",
+          "bingo-game/bingo-detection-lines/VAL-BI-008-diag-anti-bingo.png"
+        ],
+        "consoleErrors": "none",
+        "network": "n/a (client-side state only)"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "Playwright agent-browser click commands timeout when clicking bingo board squares, even on fresh unmarked boards. The first click on a square works, but subsequent chained clicks (e.g., @e2 && @e3) time out. This appears unrelated to celebration overlay.",
+      "resolved": true,
+      "resolution": "Used JavaScript eval to dispatch click() events on DOM buttons directly instead of Playwright click commands. This worked reliably for all 8 assertions.",
+      "affectedAssertions": ["VAL-BI-001", "VAL-BI-002", "VAL-BI-003", "VAL-BI-004", "VAL-BI-005", "VAL-BI-006", "VAL-BI-007", "VAL-BI-008"]
+    },
+    {
+      "description": "SessionStorage must be cleared AND page reloaded between tests to reset React state. Simply clearing sessionStorage via eval without reloading leaves stale React state.",
+      "resolved": true,
+      "resolution": "Used pattern: eval sessionStorage.clear() → open URL → eval click buttons. This ensures fresh React state for each test.",
+      "affectedAssertions": ["VAL-BI-001", "VAL-BI-002", "VAL-BI-003", "VAL-BI-004", "VAL-BI-005", "VAL-BI-006", "VAL-BI-007", "VAL-BI-008"]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 8 assertions: all 8 passed. Every bingo line type (3 rows, 3 columns, 2 diagonals) correctly triggers bingo detection with 🎉 BINGO! 🎉 celebration heading when all 5 squares in the line are marked. No console errors observed during any test. Playwright click timeouts required JS-based click workaround."
+}
