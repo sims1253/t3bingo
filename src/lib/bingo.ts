@@ -1,6 +1,48 @@
 import { BINGO_ITEMS, CENTER_ITEM } from './items'
 
 /**
+ * All 12 possible winning lines on a 5×5 bingo board.
+ *
+ * Organized as: 5 rows, 5 columns, 2 diagonals.
+ * Each line is an array of 5 indices into the flat 25-element board array.
+ */
+export const WINNING_LINES: readonly (readonly number[])[] = [
+  // Rows
+  [0, 1, 2, 3, 4],
+  [5, 6, 7, 8, 9],
+  [10, 11, 12, 13, 14],
+  [15, 16, 17, 18, 19],
+  [20, 21, 22, 23, 24],
+  // Columns
+  [0, 5, 10, 15, 20],
+  [1, 6, 11, 16, 21],
+  [2, 7, 12, 17, 22],
+  [3, 8, 13, 18, 23],
+  [4, 9, 14, 19, 24],
+  // Diagonals
+  [0, 6, 12, 18, 24], // main diagonal (top-left to bottom-right)
+  [4, 8, 12, 16, 20], // anti-diagonal (top-right to bottom-left)
+]
+
+/**
+ * Check if any winning line is fully marked.
+ * Returns true if at least one complete line exists, false otherwise.
+ * Pure function — bingo state is computed from marks, not stored.
+ */
+export function checkBingo(marks: Set<number>): boolean {
+  return WINNING_LINES.some((line) => line.every((index) => marks.has(index)))
+}
+
+/**
+ * Get all completed winning lines.
+ * Returns an array of line index arrays that are fully marked.
+ * Useful for highlighting which lines triggered bingo.
+ */
+export function getCompletedLines(marks: Set<number>): readonly (readonly number[])[] {
+  return WINNING_LINES.filter((line) => line.every((index) => marks.has(index)))
+}
+
+/**
  * Hash a string seed to a 32-bit integer using a DJB2-like hash function.
  * Works with any string input including empty strings, Unicode, special chars.
  */

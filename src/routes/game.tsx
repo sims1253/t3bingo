@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { z } from 'zod'
-import { generateBoard } from '#/lib/bingo'
+import { checkBingo, generateBoard } from '#/lib/bingo'
 import { loadMarks, saveMarks, toggleMark } from '#/lib/marks'
 import { Board } from '#/components/Board'
 import { RotateCcw, Share2 } from 'lucide-react'
@@ -71,12 +71,27 @@ function GamePage() {
 
   const board = generateBoard(seed)
 
+  // Bingo state: reactively computed from marks (not stored separately)
+  const hasBingo = useMemo(() => checkBingo(marks), [marks])
+
   return (
     <main className="flex min-h-screen flex-col items-center px-4 py-8">
       <div className="w-full max-w-lg">
         <h1 className="display-title mb-6 text-center text-3xl font-bold tracking-tight text-[var(--sea-ink)] sm:text-4xl">
           t3ingo
         </h1>
+
+        {hasBingo && (
+          <div
+            role="alert"
+            aria-live="polite"
+            className="mb-4 rounded-lg border-2 border-[var(--lagoon-deep)] bg-[var(--lagoon)]/15 px-4 py-3 text-center"
+          >
+            <p className="text-lg font-bold tracking-wide text-[var(--lagoon-deep)]">
+              🎉 BINGO! 🎉
+            </p>
+          </div>
+        )}
 
         <Board items={board} marks={marks} onToggle={handleToggle} />
 
