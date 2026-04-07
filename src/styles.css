@@ -146,3 +146,60 @@ button {
     color: var(--foreground);
   }
 }
+
+/* ============================
+   Celebration Animations
+   ============================ */
+
+/* Confetti particle falling animation */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.confetti-fall {
+  animation-name: confetti-fall;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+}
+
+/* Pulsing glow effect for the BINGO banner */
+@keyframes celebration-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 8px rgba(79, 184, 178, 0.3),
+      0 0 16px rgba(79, 184, 178, 0.15);
+  }
+  50% {
+    box-shadow:
+      0 0 16px rgba(79, 184, 178, 0.5),
+      0 0 32px rgba(79, 184, 178, 0.25);
+  }
+}
+
+.celebration-glow {
+  animation: celebration-glow 1.5s ease-in-out infinite;
+}
+
+/* Respect prefers-reduced-motion: disable all celebration animations */
+@media (prefers-reduced-motion: reduce) {
+  .confetti-fall {
+    animation: none !important;
+  }
+
+  .celebration-glow {
+    animation: none !important;
+    box-shadow: 0 0 8px rgba(79, 184, 178, 0.3);
+  }
+}

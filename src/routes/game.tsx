@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { checkBingo, generateBoard } from '#/lib/bingo'
 import { loadMarks, saveMarks, toggleMark } from '#/lib/marks'
 import { Board } from '#/components/Board'
+import { Celebration } from '#/components/Celebration'
 import { RotateCcw, Share2 } from 'lucide-react'
 
 const gameSearchSchema = z.object({
@@ -81,17 +82,7 @@ function GamePage() {
           t3ingo
         </h1>
 
-        {hasBingo && (
-          <div
-            role="alert"
-            aria-live="polite"
-            className="mb-4 rounded-lg border-2 border-[var(--lagoon-deep)] bg-[var(--lagoon)]/15 px-4 py-3 text-center"
-          >
-            <p className="text-lg font-bold tracking-wide text-[var(--lagoon-deep)]">
-              🎉 BINGO! 🎉
-            </p>
-          </div>
-        )}
+        <Celebration hasBingo={hasBingo} />
 
         <Board items={board} marks={marks} onToggle={handleToggle} />
 
