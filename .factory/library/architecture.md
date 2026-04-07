@@ -32,11 +32,34 @@ User visits / → Landing page (SSR) → Clicks "Play" → /game?seed=abc123
 ### Game Logic (`src/lib/`)
 - `bingo.ts` — Seeded PRNG, board generation, bingo detection algorithms
 - `items.ts` — Curated pool of 45 bingo items (flat array of strings)
+- `seed.ts` — Shared seed generation utility (`generateRandomSeed`, `generateDifferentSeed`)
+- `marks.ts` — Mark state management (load/save/toggle marks in sessionStorage, keyed by seed)
 
 ### UI Components (`src/components/`)
 - `Board.tsx` — 5x5 grid container
 - `Square.tsx` — Individual cell (clickable, toggleable)
 - `Celebration.tsx` — Celebration effect (confetti/banner)
+
+## Testing Setup
+
+- **Vitest** is the test runner (`bun run test`)
+- **Default environment:** Node (set in `vitest.config.ts`)
+- **React component tests:** Use `// @vitest-environment jsdom` docblock to switch to jsdom per-file
+- **Test setup:** `vitest.setup.ts` imports `@testing-library/jest-dom/vitest` for DOM matchers (`toBeInTheDocument()`, `toHaveTextContent()`, etc.)
+- **Test co-location:** Test files live next to source (e.g., `src/lib/bingo.test.ts`, `src/components/Celebration.test.tsx`)
+
+## CSS Design System
+
+The project uses CSS custom properties for theming, defined in `src/styles.css`:
+- `--lagoon` / `--lagoon-deep` — Primary teal/aqua colors
+- `--sea-ink` / `--sea-ink-soft` — Dark background tones
+- `--surface` — Card/cell background
+- `--line` — Border/outline color
+
+Tailwind v4 patterns used:
+- `bg-[var(--lagoon)]/20` — CSS variable with Tailwind opacity modifier
+- `border-[var(--lagoon-deep)]` — CSS variable for borders
+- `text-[var(--sea-ink)]` — CSS variable for text colors
 
 ## Key Invariants
 

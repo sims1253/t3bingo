@@ -22,6 +22,15 @@ None. No API keys, no database, no third-party services.
 - **TanStack Start** v1.x (React full-stack framework)
 - **TanStack Router** (file-based routing with type-safe search params)
 - **Nitro** (deployment adapter for Vercel)
+- **Zod** v4.3.x (schema validation for search params — note: v4 has API differences from v3)
+
+## Testing
+
+- **Vitest** v3.x (test runner)
+- **@testing-library/jest-dom** v6.x (DOM matchers via vitest.setup.ts)
+- **@testing-library/react** (React component testing utilities)
+- **jsdom** (DOM environment for component tests, enabled per-file via `@vitest-environment jsdom` docblock)
+- **Note:** `lint` and `typecheck` scripts are identical (`tsc --noEmit`). No separate ESLint/Prettier is configured.
 
 ## Styling
 
