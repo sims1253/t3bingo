@@ -1,3 +1,4 @@
+import { forwardRef } from 'react'
 import { Square } from './Square'
 
 interface BoardProps {
@@ -18,10 +19,16 @@ interface BoardProps {
  * Uses role="group" (not role="grid") because all 25 squares are
  * individually Tab-focusable. A role="grid" would require arrow-key
  * navigation with roving tabindex, which we don't implement.
+ *
+ * Accepts a forwarded ref for html2canvas capture of the board.
  */
-export function Board({ items, marks, onToggle }: BoardProps) {
+export const Board = forwardRef<HTMLDivElement, BoardProps>(function Board(
+  { items, marks, onToggle },
+  ref,
+) {
   return (
     <div
+      ref={ref}
       className="bingo-grid grid grid-cols-5 gap-1.5 sm:gap-2 w-full"
       role="group"
       aria-label="Bingo board, 5 by 5 grid"
@@ -36,4 +43,4 @@ export function Board({ items, marks, onToggle }: BoardProps) {
       ))}
     </div>
   )
-}
+})

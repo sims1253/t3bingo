@@ -1,5 +1,5 @@
 import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { z } from 'zod'
 import { checkBingo, generateBoard } from '#/lib/bingo'
 import { loadMarks, saveMarks, toggleMark } from '#/lib/marks'
@@ -7,6 +7,7 @@ import { generateRandomSeed, generateDifferentSeed } from '#/lib/seed'
 import { Board } from '#/components/Board'
 import { Celebration } from '#/components/Celebration'
 import { ShareButton } from '#/components/ShareButton'
+import { ShareOnSocial } from '#/components/ShareOnSocial'
 import { RotateCcw } from 'lucide-react'
 
 /**
@@ -65,6 +66,9 @@ function GamePage() {
   // Marks are loaded from sessionStorage in useEffect after hydration completes.
   const [marks, setMarks] = useState<Set<number>>(() => new Set())
 
+  // Ref to the board DOM element for html2canvas capture
+  const boardRef = useRef<HTMLDivElement>(null)
+
   // Load marks from sessionStorage after hydration, and when seed changes
   useEffect(() => {
     if (!seed) return
@@ -103,9 +107,9 @@ function GamePage() {
         <Celebration hasBingo={hasBingo} />
 
         <h2 className="sr-only">Bingo Board</h2>
-        <Board items={board} marks={marks} onToggle={handleToggle} />
+        <Board ref={boardRef} items={board} marks={marks} onToggle={handleToggle} />
 
-        <div className="mt-5 flex items-center justify-center gap-3">
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
           <button
             type="button"
             onClick={handleNewGame}
@@ -115,6 +119,7 @@ function GamePage() {
             New Game
           </button>
           <ShareButton />
+          <ShareOnSocial hasBingo={hasBingo} boardRef={boardRef} />
         </div>
 
         <p className="mt-5 text-center font-mono text-[11px] text-[var(--text-muted)]">
