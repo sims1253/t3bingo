@@ -36,10 +36,11 @@ User visits / → Landing page (SSR) → Clicks "Play" → /game?seed=abc123
 - `marks.ts` — Mark state management (load/save/toggle marks in sessionStorage, keyed by seed)
 
 ### UI Components (`src/components/`)
-- `Board.tsx` — 5x5 grid container (role="group", aria-label for screen readers)
+- `Board.tsx` — 5x5 grid container (role="group", aria-label for screen readers, uses `forwardRef` to expose DOM node for html2canvas capture)
 - `Square.tsx` — Individual cell (clickable, toggleable, native `<button>` with aria-pressed)
 - `Celebration.tsx` — Celebration effect (confetti/banner, respects prefers-reduced-motion)
 - `ShareButton.tsx` — Share button (clipboard copy with Web Share API fallback, visual feedback)
+- `ShareOnSocial.tsx` — Social image sharing button (html2canvas board capture, desktop download+clipboard, mobile Web Share API, visible only during bingo)
 
 ## Testing Setup
 
