@@ -1,0 +1,75 @@
+{
+  "groupId": "val-si020-rerun",
+  "testedAt": "2026-04-08T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "session": "bd275964ec30__val_si020",
+    "viewport": "375x667"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-SI-020",
+      "title": "Share on Social is responsive on mobile",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open agent-browser session with viewport 375×667 and navigate to http://localhost:3000",
+          "expected": "Page loads and auto-redirects to game page with seed",
+          "observed": "Redirected to http://localhost:3000/game?seed=CHKDBWgEbB"
+        },
+        {
+          "action": "Click 5 squares in first row to achieve bingo using JS eval",
+          "expected": "Bingo detected, celebration active, Share on Social button appears",
+          "observed": "Bingo achieved, Share on Social button visible"
+        },
+        {
+          "action": "Take screenshot on mobile viewport during bingo",
+          "expected": "Button properly rendered, no horizontal overflow",
+          "observed": "Button rendered correctly, no horizontal overflow (scrollWidth=375, innerWidth=375)"
+        },
+        {
+          "action": "Measure button dimensions via getBoundingClientRect()",
+          "expected": "Button height at least 44px (touch target minimum)",
+          "observed": "Button dimensions: width=164px, height=46px, top=572.98, left=105.5, bottom=618.98, right=269.5"
+        },
+        {
+          "action": "Verify button is fully visible within viewport",
+          "expected": "Button bottom (618.98px) within viewport height (667px)",
+          "observed": "Button fully visible within viewport, no clipping"
+        },
+        {
+          "action": "Check for console errors",
+          "expected": "No console errors",
+          "observed": "No console errors"
+        },
+        {
+          "action": "Check for horizontal overflow",
+          "expected": "No horizontal overflow on 375px viewport",
+          "observed": "No horizontal overflow (scrollWidth equals innerWidth)"
+        }
+      ],
+      "evidence": {
+        "screenshots": ["social-sharing/val-si020-rerun/VAL-SI-020-mobile-bingo-button.png"],
+        "consoleErrors": "none",
+        "network": "n/a",
+        "domMeasurements": {
+          "buttonWidth": 164,
+          "buttonHeight": 46,
+          "buttonTop": 572.984375,
+          "buttonLeft": 105.5,
+          "buttonBottom": 618.984375,
+          "buttonRight": 269.5,
+          "viewportWidth": 375,
+          "viewportHeight": 667,
+          "scrollWidth": 375,
+          "hasHorizontalOverflow": false
+        }
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 1 assertion: VAL-SI-020 PASSED. The 'Share on Social' button on a 375×667 mobile viewport measures 164×46px, exceeding the 44×44px minimum touch target requirement (previously 42px, now 46px after fix). The button is fully visible within the viewport, causes no horizontal overflow, and no console errors were observed."
+}

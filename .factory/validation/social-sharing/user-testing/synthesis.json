@@ -1,11 +1,11 @@
 {
   "milestone": "social-sharing",
-  "round": 1,
-  "status": "fail",
+  "round": 2,
+  "status": "pass",
   "assertionsSummary": {
     "total": 22,
-    "passed": 21,
-    "failed": 1,
+    "passed": 22,
+    "failed": 0,
     "blocked": 0
   },
   "passedAssertions": [
@@ -28,29 +28,19 @@
     "VAL-SI-017",
     "VAL-SI-018",
     "VAL-SI-019",
+    "VAL-SI-020",
     "VAL-XF-017",
     "VAL-XF-018"
   ],
-  "failedAssertions": [
-    {
-      "id": "VAL-SI-020",
-      "reason": "Share on Social button height is 42px on mobile viewport (375×667), 2px below the 44px minimum touch target per Apple HIG. CSS padding of 10px top/bottom + 14px font-size + line-height results in 42px total height. Fix: increase py-2.5 (10px) to py-3 (12px) or add min-h-[44px] to the button class."
-    }
-  ],
+  "failedAssertions": [],
   "blockedAssertions": [],
-  "appliedUpdates": [
-    {
-      "target": "user-testing.md",
-      "description": "Added Social Sharing Testing Notes section with technical details about ShareOnSocial component behavior, desktop/mobile paths, loading states, error handling, and testing approach for html2canvas and Web Share API.",
-      "source": "setup"
-    }
-  ],
-  "previousRound": null,
-  "flowReports": [
-    ".factory/validation/social-sharing/user-testing/flows/social-share-visibility-capture.json",
-    ".factory/validation/social-sharing/user-testing/flows/social-share-platform-behavior.json",
-    ".factory/validation/social-sharing/user-testing/flows/social-share-accessibility-flow.json"
-  ],
+  "appliedUpdates": [],
+  "previousRound": ".factory/validation/social-sharing/user-testing/flows/val-si020-rerun.json",
+  "round2Notes": {
+    "reTested": ["VAL-SI-020"],
+    "fixApplied": "fix-social-button-touch-target increased button padding to meet 44px touch target",
+    "result": "Button height now 46px on 375×667 viewport — exceeds 44px minimum. VAL-SI-020 now passes."
+  },
   "notes": {
     "headlessLimitations": [
       "Clipboard API read is blocked in headless Chromium (permission denied). Clipboard write verified via source code review and button feedback ('Copied!').",
