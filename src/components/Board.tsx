@@ -14,13 +14,17 @@ interface BoardProps {
  *
  * Each cell is a Square component (clickable <button> with mark toggle).
  * The grid is horizontally centered by its parent container.
+ *
+ * Uses role="group" (not role="grid") because all 25 squares are
+ * individually Tab-focusable. A role="grid" would require arrow-key
+ * navigation with roving tabindex, which we don't implement.
  */
 export function Board({ items, marks, onToggle }: BoardProps) {
   return (
     <div
       className="grid grid-cols-5 gap-1 sm:gap-2"
-      role="grid"
-      aria-label="Bingo board"
+      role="group"
+      aria-label="Bingo board, 5 by 5 grid"
     >
       {items.map((item, index) => (
         <Square

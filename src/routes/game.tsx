@@ -100,6 +100,7 @@ function GamePage() {
 
         <Celebration hasBingo={hasBingo} />
 
+        <h2 className="sr-only">Bingo Board</h2>
         <Board items={board} marks={marks} onToggle={handleToggle} />
 
         <div className="mt-4 flex items-center justify-center gap-3">
