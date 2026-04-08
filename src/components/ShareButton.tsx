@@ -1,0 +1,110 @@
+import { useCallback, useRef, useState } from 'react'
+import { Share2, CheckCircle, XCircle } from 'lucide-react'
+
+/** Feedback states for the share button */
+type ShareState = 'idle' | 'copied' | 'error'
+
+/** Duration in ms to show feedback before reverting to idle */
+const FEEDBACK_DURATION = 2000
+
+/**
+ * Share button that copies the current page URL to clipboard or uses Web Share API.
+ *
+ * Behavior:
+ * - Uses Web Share API (navigator.share) when available (typically mobile)
+ * - Falls back to Clipboard API (navigator.clipboard.writeText)
+ * - Shows "Copied!" feedback for 2 seconds, then reverts
+ * - Shows error feedback if both methods fail
+ * - Handles AbortError from Web Share API gracefully (user cancelled = no error)
+ * - Disabled during share operation to prevent double-clicks
+ * - Does not alter board state
+ */
+export function ShareButton() {
+  const [shareState, setShareState] = useState<ShareState>('idle')
+  const [disabled, setDisabled] = useState(false)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const resetAfterDelay = useCallback(() => {
+    if (timerRef.current) clearTimeout(timerRef.current)
+    timerRef.current = setTimeout(() => {
+      setShareState('idle')
+      timerRef.current = null
+    }, FEEDBACK_DURATION)
+  }, [])
+
+  const handleShare = useCallback(async () => {
+    // Prevent double clicks
+    if (disabled) return
+    setDisabled(true)
+
+    const url = window.location.href
+
+    try {
+      // Try Web Share API first (available on mobile)
+      if (typeof navigator.share === 'function') {
+        try {
+          await navigator.share({
+            title: 't3ingo — Theo Twitch Bingo',
+            url,
+          })
+          // Web Share succeeded (or user completed share sheet)
+          setShareState('copied')
+          resetAfterDelay()
+          return
+        } catch (err) {
+          // User cancelled the share sheet — not an error, just revert
+          if (err instanceof DOMException && err.name === 'AbortError') {
+            setShareState('idle')
+            return
+          }
+          // Other Web Share errors — fall through to clipboard
+        }
+      }
+
+      // Try Clipboard API
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url)
+        setShareState('copied')
+        resetAfterDelay()
+        return
+      }
+
+      // Neither API available
+      setShareState('error')
+      resetAfterDelay()
+    } catch {
+      // Clipboard API rejected or failed
+      setShareState('error')
+      resetAfterDelay()
+    } finally {
+      setDisabled(false)
+    }
+  }, [disabled, resetAfterDelay])
+
+  const label = shareState === 'copied' ? 'Copied!' : shareState === 'error' ? 'Could not copy' : 'Share'
+
+  const Icon = shareState === 'copied' ? CheckCircle : shareState === 'error' ? XCircle : Share2
+
+  return (
+    <button
+      type="button"
+      onClick={handleShare}
+      disabled={disabled}
+      aria-label={label}
+      className={
+        'inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-5 py-2 ' +
+        'text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--lagoon)] ' +
+        (shareState === 'copied'
+          ? 'border-green-400 bg-green-50 text-green-700 '
+          : shareState === 'error'
+            ? 'border-red-400 bg-red-50 text-red-700 '
+            : 'border-[rgba(50,143,151,0.3)] bg-[var(--surface)] text-[var(--lagoon-deep)] hover:bg-[rgba(79,184,178,0.15)] '
+        ) +
+        (disabled ? 'opacity-60 cursor-not-allowed' : '')
+      }
+    >
+      <Icon className="h-4 w-4" aria-hidden="true" />
+      {label}
+    </button>
+  )
+}

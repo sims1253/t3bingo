@@ -6,7 +6,8 @@ import { loadMarks, saveMarks, toggleMark } from '#/lib/marks'
 import { generateRandomSeed, generateDifferentSeed } from '#/lib/seed'
 import { Board } from '#/components/Board'
 import { Celebration } from '#/components/Celebration'
-import { RotateCcw, Share2 } from 'lucide-react'
+import { ShareButton } from '#/components/ShareButton'
+import { RotateCcw } from 'lucide-react'
 
 /**
  * Search param schema for the game route.
@@ -41,7 +42,14 @@ export const Route = createFileRoute('/game')({
     }
   },
   head: () => ({
-    meta: [{ title: 't3ingo — Playing' }],
+    meta: [
+      { title: 't3ingo — Playing Bingo' },
+      {
+        name: 'description',
+        content:
+          'Play Theo Twitch Bingo! Mark squares as funny Theo moments happen during the livestream and celebrate when you complete a line.',
+      },
+    ],
   }),
   component: GamePage,
 })
@@ -103,13 +111,7 @@ function GamePage() {
             <RotateCcw className="h-4 w-4" aria-hidden="true" />
             New Game
           </button>
-          <button
-            type="button"
-            className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-[rgba(50,143,151,0.3)] bg-[var(--surface)] px-5 py-2 text-sm font-medium text-[var(--lagoon-deep)] transition-colors hover:bg-[rgba(79,184,178,0.15)] focus:outline-none focus:ring-2 focus:ring-[var(--lagoon)]"
-          >
-            <Share2 className="h-4 w-4" aria-hidden="true" />
-            Share
-          </button>
+          <ShareButton />
         </div>
 
         <p className="mt-4 text-center text-xs text-[var(--sea-ink-soft)]">

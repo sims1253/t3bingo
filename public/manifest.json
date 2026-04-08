@@ -1,6 +1,6 @@
 {
-  "short_name": "TanStack App",
-  "name": "Create TanStack App Sample",
+  "short_name": "t3ingo",
+  "name": "t3ingo — Theo Twitch Bingo",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,7 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#4fb8b2",
+  "background_color": "#f8f7f4",
+  "description": "A bingo game for Theo Twitch livestreams. Get a random board of funny recurring Theo moments and play along!"
 }
