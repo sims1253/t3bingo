@@ -189,7 +189,7 @@ export function ShareOnSocial({ hasBingo, boardRef }: ShareOnSocialProps) {
         aria-label="Share bingo board as image on social media"
         aria-busy={isLoading}
         className={
-          'inline-flex cursor-pointer items-center gap-1.5 rounded-lg border px-5 py-2.5 ' +
+          'inline-flex cursor-pointer items-center gap-1.5 rounded-lg border px-5 py-3 ' +
           'text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/50 ' +
           (shareState === 'copied'
             ? 'border-[var(--accent)]/40 bg-[var(--accent-glow)] text-[var(--accent)] '
