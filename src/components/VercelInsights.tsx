@@ -1,11 +1,11 @@
-import { useEffect } from 'react'
-import { inject } from '@vercel/analytics'
-import { injectSpeedInsights } from '@vercel/speed-insights'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 
 export function VercelInsights() {
-  useEffect(() => {
-    inject()
-    injectSpeedInsights()
-  }, [])
-  return null
+  return (
+    <>
+      <Analytics />
+      <SpeedInsights />
+    </>
+  )
 }
