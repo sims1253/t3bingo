@@ -36,9 +36,10 @@ User visits / → Landing page (SSR) → Clicks "Play" → /game?seed=abc123
 - `marks.ts` — Mark state management (load/save/toggle marks in sessionStorage, keyed by seed)
 
 ### UI Components (`src/components/`)
-- `Board.tsx` — 5x5 grid container
-- `Square.tsx` — Individual cell (clickable, toggleable)
-- `Celebration.tsx` — Celebration effect (confetti/banner)
+- `Board.tsx` — 5x5 grid container (role="group", aria-label for screen readers)
+- `Square.tsx` — Individual cell (clickable, toggleable, native `<button>` with aria-pressed)
+- `Celebration.tsx` — Celebration effect (confetti/banner, respects prefers-reduced-motion)
+- `ShareButton.tsx` — Share button (clipboard copy with Web Share API fallback, visual feedback)
 
 ## Testing Setup
 
@@ -47,6 +48,20 @@ User visits / → Landing page (SSR) → Clicks "Play" → /game?seed=abc123
 - **React component tests:** Use `// @vitest-environment jsdom` docblock to switch to jsdom per-file
 - **Test setup:** `vitest.setup.ts` imports `@testing-library/jest-dom/vitest` for DOM matchers (`toBeInTheDocument()`, `toHaveTextContent()`, etc.)
 - **Test co-location:** Test files live next to source (e.g., `src/lib/bingo.test.ts`, `src/components/Celebration.test.tsx`)
+
+## Responsive Design Strategy
+
+The project uses a **mobile-first** Tailwind approach with a single breakpoint:
+- **Mobile** (default): `text-[11px]`, `gap-1`, `min-h-[4.5rem]`
+- **Tablet/Desktop** (`sm:` / 640px+): `text-xs`, `gap-2`, `min-h-20`
+
+No intermediate (`md:`, `lg:`) or large (`xl:`) breakpoints are needed because the layout is effectively binary: mobile (single column, small grid) vs. desktop (centered grid with more spacing). The `max-w-lg` container on the game page constrains the grid to a comfortable size on all viewports.
+
+Key responsive files: `Square.tsx` (text size, height, padding), `Board.tsx` (gap), `game.tsx` (heading size), `index.tsx` (hero text).
+
+## TanStack Start Route head() Behavior
+
+Child route `head()` functions define additional meta tags that are **merged** with (not replaced by) the root route's head. For example, `game.tsx` defines `title` and `description`, but the game page also inherits `og:title`, `og:description`, and `og:type` from `__root.tsx`. This means the root route is the correct place for app-wide OG tags, while child routes only need to override page-specific meta.
 
 ## CSS Design System
 
