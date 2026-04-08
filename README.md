@@ -2,8 +2,6 @@
 
 > Theo's Twitch Stream Bingo — mark the moments as they happen live.
 
-![t3bingo screenshot](public/screenshot.png)
-
 ## What is this?
 
 A **5×5 bingo game** for [Theo's](https://www.twitch.tv/theo) Twitch livestreams. Visitors get a randomly generated board filled with funny recurring Theo moments, mark squares as they happen, and share their board with friends via URL.
