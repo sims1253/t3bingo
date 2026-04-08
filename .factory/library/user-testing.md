@@ -78,3 +78,17 @@ Testing surface, required testing skills/tools, and resource cost classification
 - Use unique agent-browser session names to avoid browser context collisions
 - Take screenshots for evidence; do not modify the application
 - If a validator needs to test click interactions (e.g., Play button), be aware the seed is random — just verify the pattern, not specific values
+
+## Social Sharing Testing Notes
+
+- **ShareOnSocial component** (`src/components/ShareOnSocial.tsx`) only renders when `hasBingo={true}`; before bingo, it returns `null` (not in DOM).
+- **html2canvas** is used to capture the board DOM element. The board element is accessed via a `ref` on the `Board` component.
+- **Desktop behavior**: Downloads PNG via `<a>` element click + copies URL to clipboard via `navigator.clipboard.writeText`.
+- **Mobile behavior**: Uses Web Share API (`navigator.share`) with PNG file + URL. Falls back to desktop behavior if Web Share API is not available or user cancels.
+- **Loading states**: Button shows "Generating…" with spinner during capture, "Copied!" after success, returns to "Share on Social" after 2 seconds.
+- **Error handling**: If html2canvas fails, shows error message "Failed to generate image: ..." which clears after 3 seconds.
+- **To achieve bingo for testing**: Mark all 5 squares in any row, column, or diagonal using JS eval clicks on `button[aria-pressed]` elements. Row 1 (indices 0-4) is easiest.
+- **Button selector**: The Share on Social button can be found by `button[aria-label="Share bingo board as image on social media"]` or by text content "Share on Social".
+- **Coexistence**: The existing "Share" button (URL copy) is always visible. The "Share on Social" button only appears during bingo. Both are in the same `.flex` container below the board.
+- **Download interception**: In agent-browser, downloads triggered by `link.click()` can be verified by monitoring download events or checking for file creation. For clipboard, use JS eval to read clipboard after click.
+- **Web Share API testing on mobile viewport**: The Web Share API (`navigator.share`) may not be available in headless Chromium. Tests should verify that the button is functional and either the share API is called OR the desktop fallback (download + clipboard) is triggered.

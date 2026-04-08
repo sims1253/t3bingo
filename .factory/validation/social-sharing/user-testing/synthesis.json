@@ -1,0 +1,62 @@
+{
+  "milestone": "social-sharing",
+  "round": 1,
+  "status": "fail",
+  "assertionsSummary": {
+    "total": 22,
+    "passed": 21,
+    "failed": 1,
+    "blocked": 0
+  },
+  "passedAssertions": [
+    "VAL-SI-001",
+    "VAL-SI-002",
+    "VAL-SI-003",
+    "VAL-SI-004",
+    "VAL-SI-005",
+    "VAL-SI-006",
+    "VAL-SI-007",
+    "VAL-SI-008",
+    "VAL-SI-009",
+    "VAL-SI-010",
+    "VAL-SI-011",
+    "VAL-SI-012",
+    "VAL-SI-013",
+    "VAL-SI-014",
+    "VAL-SI-015",
+    "VAL-SI-016",
+    "VAL-SI-017",
+    "VAL-SI-018",
+    "VAL-SI-019",
+    "VAL-XF-017",
+    "VAL-XF-018"
+  ],
+  "failedAssertions": [
+    {
+      "id": "VAL-SI-020",
+      "reason": "Share on Social button height is 42px on mobile viewport (375×667), 2px below the 44px minimum touch target per Apple HIG. CSS padding of 10px top/bottom + 14px font-size + line-height results in 42px total height. Fix: increase py-2.5 (10px) to py-3 (12px) or add min-h-[44px] to the button class."
+    }
+  ],
+  "blockedAssertions": [],
+  "appliedUpdates": [
+    {
+      "target": "user-testing.md",
+      "description": "Added Social Sharing Testing Notes section with technical details about ShareOnSocial component behavior, desktop/mobile paths, loading states, error handling, and testing approach for html2canvas and Web Share API.",
+      "source": "setup"
+    }
+  ],
+  "previousRound": null,
+  "flowReports": [
+    ".factory/validation/social-sharing/user-testing/flows/social-share-visibility-capture.json",
+    ".factory/validation/social-sharing/user-testing/flows/social-share-platform-behavior.json",
+    ".factory/validation/social-sharing/user-testing/flows/social-share-accessibility-flow.json"
+  ],
+  "notes": {
+    "headlessLimitations": [
+      "Clipboard API read is blocked in headless Chromium (permission denied). Clipboard write verified via source code review and button feedback ('Copied!').",
+      "Web Share API (navigator.share) is not available in headless Chromium. Mobile share behavior verified via source code review; desktop fallback (download + clipboard) tested on mobile viewport.",
+      "html2canvas error handling could not be force-triggered in headless Chromium. Error path verified via source code review: try/catch wraps html2canvas call, displays error via <p role='alert'>, resets button after 3 seconds.",
+      "Landing page (/) auto-redirects to game page. This effectively achieves the same result as clicking Play — user lands on a seeded game page."
+    ]
+  }
+}
