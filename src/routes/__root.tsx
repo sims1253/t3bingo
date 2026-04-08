@@ -55,7 +55,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body className="font-sans antialiased bg-[var(--bg-base)] text-[var(--sea-ink)] min-h-screen">
+      <body className="font-sans antialiased bg-[var(--bg)] text-[var(--text-primary)] min-h-screen">
         {children}
         <Scripts />
       </body>
@@ -67,19 +67,19 @@ export function NotFoundPage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4 py-12">
       <div className="w-full max-w-lg text-center">
-        <h1 className="display-title mb-4 text-6xl font-bold tracking-tight text-[var(--sea-ink)] sm:text-8xl">
+        <h1 className="display-title mb-4 text-6xl font-bold tracking-tight text-[var(--text-primary)] sm:text-8xl">
           404
         </h1>
-        <p className="mb-2 text-lg font-medium text-[var(--sea-ink-soft)] sm:text-xl">
+        <p className="mb-2 text-lg font-medium text-[var(--text-secondary)] sm:text-xl">
           Page not found
         </p>
-        <p className="mx-auto mb-8 max-w-md text-sm text-[var(--sea-ink-soft)] sm:text-base">
+        <p className="mx-auto mb-8 max-w-md text-sm text-[var(--text-muted)] sm:text-base">
           The page you&apos;re looking for doesn&apos;t exist. Maybe you took a wrong turn
           on the way to bingo?
         </p>
         <Link
           to="/"
-          className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-[rgba(50,143,151,0.3)] bg-[rgba(79,184,178,0.14)] px-8 py-3 text-base font-semibold text-[var(--lagoon-deep)] no-underline transition hover:-translate-y-0.5 hover:bg-[rgba(79,184,178,0.24)] focus:outline-none focus:ring-2 focus:ring-[var(--lagoon)] focus:ring-offset-2"
+          className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-[var(--accent)]/30 bg-[var(--accent-glow)] px-8 py-3 text-base font-semibold text-[var(--accent)] no-underline transition-all duration-200 hover:-translate-y-0.5 hover:bg-[var(--accent-glow-strong)] hover:border-[var(--accent)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/50 focus:ring-offset-2 focus:ring-offset-[var(--bg)]"
         >
           Go Home
         </Link>
@@ -98,19 +98,19 @@ export function ErrorPage({ error }: { error: Error }) {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4 py-12">
       <div className="w-full max-w-lg text-center">
-        <h1 className="display-title mb-4 text-5xl font-bold tracking-tight text-[var(--sea-ink)] sm:text-7xl">
+        <h1 className="display-title mb-4 text-5xl font-bold tracking-tight text-[var(--text-primary)] sm:text-7xl">
           Oops!
         </h1>
-        <p className="mb-2 text-lg font-medium text-[var(--sea-ink-soft)] sm:text-xl">
+        <p className="mb-2 text-lg font-medium text-[var(--text-secondary)] sm:text-xl">
           Something went wrong
         </p>
-        <p className="mx-auto mb-8 max-w-md text-sm text-[var(--sea-ink-soft)] sm:text-base">
+        <p className="mx-auto mb-8 max-w-md text-sm text-[var(--text-muted)] sm:text-base">
           An unexpected error occurred. Don&apos;t worry, it&apos;s not your fault.
           Try going back to the home page.
         </p>
         <Link
           to="/"
-          className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-[rgba(50,143,151,0.3)] bg-[rgba(79,184,178,0.14)] px-8 py-3 text-base font-semibold text-[var(--lagoon-deep)] no-underline transition hover:-translate-y-0.5 hover:bg-[rgba(79,184,178,0.24)] focus:outline-none focus:ring-2 focus:ring-[var(--lagoon)] focus:ring-offset-2"
+          className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-[var(--accent)]/30 bg-[var(--accent-glow)] px-8 py-3 text-base font-semibold text-[var(--accent)] no-underline transition-all duration-200 hover:-translate-y-0.5 hover:bg-[var(--accent-glow-strong)] hover:border-[var(--accent)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/50 focus:ring-offset-2 focus:ring-offset-[var(--bg)]"
         >
           Go Home
         </Link>

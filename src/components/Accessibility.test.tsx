@@ -340,7 +340,7 @@ describe('VAL-AX-008: Logical heading structure', () => {
     expect(gameSource).toContain('sr-only')
   })
 
-  it('landing page source has exactly one h1 element', async () => {
+  it('landing page redirects to game (no rendered content)', async () => {
     const fs = await import('fs')
     const path = await import('path')
     const indexSource = fs.readFileSync(
@@ -348,8 +348,8 @@ describe('VAL-AX-008: Logical heading structure', () => {
       'utf-8',
     )
 
-    const h1Matches = indexSource.match(/<h1[\s>]/g)
-    expect(h1Matches).toHaveLength(1)
+    // Landing page now redirects to /game, so it should use redirect
+    expect(indexSource).toContain('redirect')
   })
 })
 

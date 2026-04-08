@@ -22,7 +22,7 @@ interface BoardProps {
 export function Board({ items, marks, onToggle }: BoardProps) {
   return (
     <div
-      className="grid grid-cols-5 gap-1 sm:gap-2"
+      className="bingo-grid grid grid-cols-5 gap-1.5 sm:gap-2 w-full"
       role="group"
       aria-label="Bingo board, 5 by 5 grid"
     >

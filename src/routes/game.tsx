@@ -92,31 +92,33 @@ function GamePage() {
   const hasBingo = useMemo(() => checkBingo(marks), [marks])
 
   return (
-    <main className="flex min-h-screen flex-col items-center px-4 py-8">
-      <div className="w-full max-w-lg">
-        <h1 className="display-title mb-6 text-center text-3xl font-bold tracking-tight text-[var(--sea-ink)] sm:text-4xl">
-          t3ingo
-        </h1>
+    <main className="flex min-h-screen flex-col items-center px-4 py-6 sm:py-10">
+      <div className="w-full max-w-2xl">
+        <header className="mb-6 text-center">
+          <h1 className="display-title text-3xl font-bold tracking-tight text-[var(--text-primary)] sm:text-4xl">
+            t3ingo
+          </h1>
+        </header>
 
         <Celebration hasBingo={hasBingo} />
 
         <h2 className="sr-only">Bingo Board</h2>
         <Board items={board} marks={marks} onToggle={handleToggle} />
 
-        <div className="mt-4 flex items-center justify-center gap-3">
+        <div className="mt-5 flex items-center justify-center gap-3">
           <button
             type="button"
             onClick={handleNewGame}
-            className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-[rgba(50,143,151,0.3)] bg-[var(--surface)] px-5 py-2 text-sm font-medium text-[var(--lagoon-deep)] transition-colors hover:bg-[rgba(79,184,178,0.15)] focus:outline-none focus:ring-2 focus:ring-[var(--lagoon)]"
+            className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-card)] px-5 py-2.5 text-sm font-medium text-[var(--text-secondary)] transition-colors hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)] hover:border-[var(--border-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/50"
           >
-            <RotateCcw className="h-4 w-4" aria-hidden="true" />
+            <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
             New Game
           </button>
           <ShareButton />
         </div>
 
-        <p className="mt-4 text-center text-xs text-[var(--sea-ink-soft)]">
-          Seed: {seed}
+        <p className="mt-5 text-center font-mono text-[11px] text-[var(--text-muted)]">
+          seed: {seed}
         </p>
       </div>
     </main>

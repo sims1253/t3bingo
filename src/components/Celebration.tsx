@@ -21,14 +21,14 @@ interface ConfettiParticle {
 }
 
 const CONFETTI_COLORS = [
-  'var(--lagoon)',
-  'var(--lagoon-deep)',
-  'var(--palm)',
-  '#f59e0b', // amber
-  '#ef4444', // red
-  '#8b5cf6', // violet
-  '#ec4899', // pink
-  '#14b8a6', // teal
+  'var(--accent)',
+  '#f59e0b',
+  '#ef4444',
+  '#8b5cf6',
+  '#ec4899',
+  '#14b8a6',
+  '#fbbf24',
+  '#3b82f6',
 ]
 
 /** Number of confetti particles to generate */
@@ -99,14 +99,14 @@ export function Celebration({ hasBingo }: CelebrationProps) {
         aria-live="polite"
         data-testid={reducedMotion ? 'static-celebration' : undefined}
         className={
-          'mb-4 rounded-lg border-2 px-4 py-3 text-center ' +
+          'mb-4 rounded-lg border-2 border-[var(--accent)]/40 bg-[var(--marked-bg)] px-4 py-3 text-center slide-in-up ' +
           (reducedMotion
-            ? 'border-[var(--lagoon-deep)] bg-[var(--lagoon)]/15'
-            : 'border-[var(--lagoon-deep)] bg-[var(--lagoon)]/15 celebration-glow')
+            ? ''
+            : 'celebration-glow')
         }
       >
-        <p className="text-lg font-bold tracking-wide text-[var(--lagoon-deep)]">
-          🎉 BINGO! 🎉
+        <p className="display-title text-xl font-bold tracking-wide text-[var(--accent)]">
+          BINGO!
         </p>
       </div>
     </>

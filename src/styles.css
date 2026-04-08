@@ -1,87 +1,92 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap');
 @import 'tailwindcss';
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --sea-ink: #173a40;
-  --sea-ink-soft: #416166;
-  --lagoon: #4fb8b2;
-  --lagoon-deep: #328f97;
-  --palm: #2f6a4a;
-  --sand: #e7f0e8;
-  --foam: #f3faf5;
-  --surface: rgba(255, 255, 255, 0.74);
-  --surface-strong: rgba(255, 255, 255, 0.9);
-  --line: rgba(23, 58, 64, 0.14);
-  --inset-glint: rgba(255, 255, 255, 0.82);
-  --kicker: rgba(47, 106, 74, 0.9);
-  --bg-base: #e7f3ec;
-  --hero-a: rgba(79, 184, 178, 0.36);
-  --hero-b: rgba(47, 106, 74, 0.2);
+  --bg: #f5f5f0;
+  --bg-raised: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f0f0eb;
+  --text-primary: #1a1a1a;
+  --text-secondary: #555555;
+  --text-muted: #999999;
+  --accent: #2d9c6f;
+  --accent-dim: #237a58;
+  --accent-glow: rgba(45, 156, 111, 0.1);
+  --accent-glow-strong: rgba(45, 156, 111, 0.18);
+  --border: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(0, 0, 0, 0.15);
+  --surface-glass: rgba(255, 255, 255, 0.8);
+  --marked-bg: rgba(45, 156, 111, 0.08);
+  --marked-border: rgba(45, 156, 111, 0.35);
+  --marked-check: rgba(45, 156, 111, 0.7);
 
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.141 0.005 285.823);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.141 0.005 285.823);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: oklch(0.21 0.006 285.885);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.21 0.006 285.885);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.871 0.006 286.286);
-  --radius: 0.625rem;
+  --background: #f5f5f0;
+  --foreground: #1a1a1a;
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+  --primary: #2d9c6f;
+  --primary-foreground: #ffffff;
+  --secondary: #e8e8e3;
+  --secondary-foreground: #1a1a1a;
+  --muted: #e8e8e3;
+  --muted-foreground: #555555;
+  --accent: #2d9c6f;
+  --accent-foreground: #ffffff;
+  --destructive: #dc2626;
+  --destructive-foreground: #dc2626;
+  --border: rgba(0, 0, 0, 0.08);
+  --input: rgba(0, 0, 0, 0.08);
+  --ring: rgba(45, 156, 111, 0.5);
+  --radius: 0.5rem;
 }
 
 .dark {
-  --sea-ink: #d7ece8;
-  --sea-ink-soft: #afcdc8;
-  --lagoon: #60d7cf;
-  --lagoon-deep: #8de5db;
-  --palm: #6ec89a;
-  --sand: #0f1a1e;
-  --foam: #101d22;
-  --surface: rgba(16, 30, 34, 0.8);
-  --surface-strong: rgba(15, 27, 31, 0.92);
-  --line: rgba(141, 229, 219, 0.18);
-  --inset-glint: rgba(194, 247, 238, 0.14);
-  --kicker: #b8efe5;
-  --bg-base: #0a1418;
-  --hero-a: rgba(96, 215, 207, 0.18);
-  --hero-b: rgba(110, 200, 154, 0.12);
+  --bg: #111111;
+  --bg-raised: #1a1a1a;
+  --bg-card: #1a1a1a;
+  --bg-card-hover: #222222;
+  --text-primary: #f0f0f0;
+  --text-secondary: #aaaaaa;
+  --text-muted: #666666;
+  --accent: #3dbd85;
+  --accent-dim: #2d9c6f;
+  --accent-glow: rgba(61, 189, 133, 0.1);
+  --accent-glow-strong: rgba(61, 189, 133, 0.18);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.15);
+  --surface-glass: rgba(26, 26, 26, 0.8);
+  --marked-bg: rgba(61, 189, 133, 0.08);
+  --marked-border: rgba(61, 189, 133, 0.35);
+  --marked-check: rgba(61, 189, 133, 0.7);
 
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.141 0.005 285.823);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.141 0.005 285.823);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.21 0.006 285.885);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.274 0.006 286.033);
-  --input: oklch(0.274 0.006 286.033);
-  --ring: oklch(0.442 0.017 285.786);
+  --background: #111111;
+  --foreground: #f0f0f0;
+  --card: #1a1a1a;
+  --card-foreground: #f0f0f0;
+  --popover: #1a1a1a;
+  --popover-foreground: #f0f0f0;
+  --primary: #3dbd85;
+  --primary-foreground: #111111;
+  --secondary: #222222;
+  --secondary-foreground: #f0f0f0;
+  --muted: #222222;
+  --muted-foreground: #aaaaaa;
+  --accent: #3dbd85;
+  --accent-foreground: #111111;
+  --destructive: #f87171;
+  --destructive-foreground: #f87171;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: rgba(61, 189, 133, 0.5);
 }
 
 @theme inline {
-  --font-sans: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -101,10 +106,10 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 6px);
 }
 
 html,
@@ -115,26 +120,22 @@ body,
 
 body {
   margin: 0;
-  color: var(--sea-ink);
   font-family: var(--font-sans);
-  background-color: var(--bg-base);
-  background:
-    radial-gradient(1100px 620px at -8% -10%, var(--hero-a), transparent 58%),
-    radial-gradient(1050px 620px at 112% -12%, var(--hero-b), transparent 62%),
-    radial-gradient(720px 380px at 50% 115%, rgba(79, 184, 178, 0.1), transparent 68%),
-    linear-gradient(180deg, color-mix(in oklab, var(--sand) 68%, white) 0%, var(--foam) 44%, var(--bg-base) 100%);
+  background-color: var(--bg);
+  color: var(--text-primary);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 .display-title {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Space Mono', ui-monospace, monospace;
+  letter-spacing: -0.02em;
 }
 
 button {
-  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease,
-    transform 180ms ease;
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease,
+    transform 150ms ease, box-shadow 150ms ease;
 }
 
 @layer base {
@@ -148,10 +149,57 @@ button {
 }
 
 /* ============================
+   Square Bingo Grid
+   ============================ */
+
+.bingo-grid {
+  container-type: inline-size;
+}
+
+.bingo-cell {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+/* ============================
+   Background noise texture
+   ============================ */
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  pointer-events: none;
+}
+
+/* ============================
+   Square mark animation
+   ============================ */
+
+@keyframes mark-pop {
+  0% {
+    transform: scale(0.92);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.mark-pop {
+  animation: mark-pop 200ms ease-out;
+}
+
+/* ============================
    Celebration Animations
    ============================ */
 
-/* Confetti particle falling animation */
 @keyframes confetti-fall {
   0% {
     transform: translateY(0) rotate(0deg);
@@ -173,18 +221,19 @@ button {
   animation-fill-mode: both;
 }
 
-/* Pulsing glow effect for the BINGO banner */
 @keyframes celebration-glow {
   0%,
   100% {
     box-shadow:
-      0 0 8px rgba(79, 184, 178, 0.3),
-      0 0 16px rgba(79, 184, 178, 0.15);
+      0 0 12px rgba(45, 156, 111, 0.2),
+      0 0 24px rgba(45, 156, 111, 0.1),
+      inset 0 0 12px rgba(45, 156, 111, 0.05);
   }
   50% {
     box-shadow:
-      0 0 16px rgba(79, 184, 178, 0.5),
-      0 0 32px rgba(79, 184, 178, 0.25);
+      0 0 20px rgba(45, 156, 111, 0.35),
+      0 0 40px rgba(45, 156, 111, 0.15),
+      inset 0 0 20px rgba(45, 156, 111, 0.08);
   }
 }
 
@@ -192,7 +241,38 @@ button {
   animation: celebration-glow 1.5s ease-in-out infinite;
 }
 
-/* Respect prefers-reduced-motion: disable all celebration animations */
+@keyframes slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-in-up {
+  animation: slide-in-up 400ms ease-out;
+}
+
+/* ============================
+   Landing page float
+   ============================ */
+
+@keyframes gentle-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.gentle-float {
+  animation: gentle-float 4s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .confetti-fall {
     animation: none !important;
@@ -200,6 +280,18 @@ button {
 
   .celebration-glow {
     animation: none !important;
-    box-shadow: 0 0 8px rgba(79, 184, 178, 0.3);
+    box-shadow: 0 0 12px rgba(45, 156, 111, 0.2);
+  }
+
+  .mark-pop {
+    animation: none !important;
+  }
+
+  .slide-in-up {
+    animation: none !important;
+  }
+
+  .gentle-float {
+    animation: none !important;
   }
 }

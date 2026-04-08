@@ -92,13 +92,13 @@ export function ShareButton() {
       disabled={disabled}
       aria-label={label}
       className={
-        'inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-5 py-2 ' +
-        'text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--lagoon)] ' +
+        'inline-flex cursor-pointer items-center gap-1.5 rounded-lg border px-5 py-2.5 ' +
+        'text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/50 ' +
         (shareState === 'copied'
-          ? 'border-green-400 bg-green-50 text-green-700 '
+          ? 'border-[var(--accent)]/40 bg-[var(--accent-glow)] text-[var(--accent)] '
           : shareState === 'error'
-            ? 'border-red-400 bg-red-50 text-red-700 '
-            : 'border-[rgba(50,143,151,0.3)] bg-[var(--surface)] text-[var(--lagoon-deep)] hover:bg-[rgba(79,184,178,0.15)] '
+            ? 'border-[var(--destructive)]/40 bg-[var(--destructive)]/10 text-[var(--destructive)] '
+            : 'border-[var(--border)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)] hover:border-[var(--border-hover)] '
         ) +
         (disabled ? 'opacity-60 cursor-not-allowed' : '')
       }

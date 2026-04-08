@@ -23,32 +23,27 @@ export function Square({ text, marked, onClick }: SquareProps) {
       aria-pressed={marked}
       aria-label={text}
       className={
-        /* layout */
-        'relative flex min-h-[4.5rem] sm:min-h-20 w-full items-center justify-center ' +
-        'rounded-lg border px-1.5 py-2 sm:px-2 sm:py-3 ' +
-        /* text */
-        'text-center text-[11px] sm:text-xs leading-snug font-medium ' +
-        /* interaction */
+        'bingo-cell relative flex w-full flex-col items-center justify-center ' +
+        'rounded-lg border px-1.5 py-1 ' +
+        'text-center text-[11px] sm:text-sm leading-snug font-medium ' +
         'cursor-pointer transition-all duration-150 ' +
-        'focus:outline-none focus:ring-2 focus:ring-[var(--lagoon)] focus:ring-offset-1 ' +
-        /* unmarked state */
+        'focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/50 focus:ring-offset-1 focus:ring-offset-[var(--bg)] ' +
         (marked
-          ? 'border-[var(--lagoon)] bg-[var(--lagoon)]/20 text-[var(--sea-ink)] ' +
-            'hover:bg-[var(--lagoon)]/30 hover:border-[var(--lagoon-deep)]'
-          : 'border-[rgba(50,143,151,0.2)] bg-[var(--surface)] text-[var(--sea-ink)] ' +
-            'hover:bg-[rgba(79,184,178,0.12)] hover:border-[rgba(79,184,178,0.35)]')
+          ? 'border-[var(--marked-border)] bg-[var(--marked-bg)] text-[var(--text-primary)] mark-pop ' +
+            'hover:bg-[var(--accent-glow-strong)] hover:border-[var(--accent-dim)]'
+          : 'border-[var(--border)] bg-[var(--bg-card)] text-[var(--text-secondary)] ' +
+            'hover:bg-[var(--bg-card-hover)] hover:border-[var(--border-hover)] hover:text-[var(--text-primary)]')
       }
     >
-      {/* Checkmark stamp — visible only when marked, provides non-color indicator */}
       {marked && (
         <span
-          className="absolute top-0.5 right-1 text-[var(--lagoon-deep)] text-sm sm:text-base font-bold select-none"
+          className="absolute top-0.5 right-1 text-[var(--accent)] text-xs sm:text-sm font-bold select-none"
           aria-hidden="true"
         >
-          ✓
+          &#x2713;
         </span>
       )}
-      <span className={marked ? 'line-through opacity-80' : ''}>{text}</span>
+      <span className={marked ? 'line-through opacity-60' : ''}>{text}</span>
     </button>
   )
 }
