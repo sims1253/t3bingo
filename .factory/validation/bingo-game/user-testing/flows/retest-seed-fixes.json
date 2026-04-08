@@ -1,0 +1,107 @@
+{
+  "groupId": "retest-seed-fixes",
+  "testedAt": "2026-04-08T00:00:00.000Z",
+  "isolation": {
+    "devServerUrl": "http://localhost:3000",
+    "sessionName": "868c20a89913__retest"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-BG-007",
+      "title": "Board generation handles edge-case seed values",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Navigate to /game?seed=0",
+          "expected": "Valid board with 25 squares, no crash",
+          "observed": "Page loaded with title 't3ingo — Playing', 25 squares rendered with text, no console errors"
+        },
+        {
+          "action": "Navigate to /game?seed=1",
+          "expected": "Valid board with 25 squares, no crash",
+          "observed": "Page loaded with title 't3ingo — Playing', 25 squares rendered with text, no console errors"
+        },
+        {
+          "action": "Navigate to /game?seed=a",
+          "expected": "Valid board with 25 squares, no crash",
+          "observed": "Page loaded with title 't3ingo — Playing', 25 squares rendered with text, no console errors"
+        },
+        {
+          "action": "Navigate to /game?seed=00000",
+          "expected": "Valid board with 25 squares, no crash",
+          "observed": "Page loaded with title 't3ingo — Playing', 25 squares rendered with text, no console errors"
+        },
+        {
+          "action": "Navigate to /game?seed=%20",
+          "expected": "Valid board with 25 squares, no crash",
+          "observed": "Page loaded with title 't3ingo — Playing', 25 squares rendered with text, no console errors"
+        },
+        {
+          "action": "Navigate to /game?seed=verylongstringthatgoesonandonandonandonandonandonandonandonandonandon",
+          "expected": "Valid board with 25 squares, no crash",
+          "observed": "Page loaded with title 't3ingo — Playing', 25 squares rendered with text, no console errors"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "retest-seed-fixes/VAL-BG-007-seed-0.png",
+          "retest-seed-fixes/VAL-BG-007-seed-1.png",
+          "retest-seed-fixes/VAL-BG-007-seed-a.png",
+          "retest-seed-fixes/VAL-BG-007-seed-00000.png",
+          "retest-seed-fixes/VAL-BG-007-seed-space.png",
+          "retest-seed-fixes/VAL-BG-007-seed-verylong.png"
+        ],
+        "consoleErrors": "none for all 6 seeds",
+        "squareCount": 25 for all 6 seeds
+      },
+      "issues": null,
+      "previousFailureFixed": "Numeric seeds (0, 1) previously crashed with Zod validation error 'expected string, received number' — now handled correctly with numeric-to-string coercion"
+    },
+    {
+      "id": "VAL-BG-008",
+      "title": "No seed parameter shows graceful behavior",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Navigate to /game (no seed query param)",
+          "expected": "Page does not crash; either redirects to seeded URL, shows landing page, or generates default board",
+          "observed": "Redirected to /game?seed=Lu0OZVNgFj with a randomly generated seed. Board renders with 25 squares and text. No crash, no blank page."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "retest-seed-fixes/VAL-BG-008-no-seed.png"
+        ],
+        "consoleErrors": "none",
+        "finalUrl": "http://localhost:3000/game?seed=Lu0OZVNgFj"
+      },
+      "issues": null,
+      "previousFailureFixed": "Previously redirected but crashed with React error 'Rendered more hooks than during the previous render' — now works correctly"
+    },
+    {
+      "id": "VAL-BG-009",
+      "title": "Empty seed parameter shows graceful behavior",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Navigate to /game?seed= (empty seed value)",
+          "expected": "Page does not crash; renders valid board or redirects gracefully",
+          "observed": "Redirected to /game?seed=qsuMUUdT8a with a randomly generated seed. Board renders with 25 squares and text. No crash, no blank page."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "retest-seed-fixes/VAL-BG-009-empty-seed.png"
+        ],
+        "consoleErrors": "none",
+        "finalUrl": "http://localhost:3000/game?seed=qsuMUUdT8a"
+      },
+      "issues": null,
+      "previousFailureFixed": "Previously had same redirect-and-hooks-crash as VAL-BG-008 — now works correctly"
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 3 previously-failed assertions: all 3 now pass. VAL-BG-007 (edge-case seeds): all 6 seed values (0, 1, a, 00000, %20, verylong) produce valid 25-square boards with no crashes. VAL-BG-008 (no seed): gracefully redirects to a random seeded URL. VAL-BG-009 (empty seed): gracefully redirects to a random seeded URL. No console errors observed for any test case."
+}

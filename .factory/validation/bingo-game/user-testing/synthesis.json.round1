@@ -1,11 +1,11 @@
 {
   "milestone": "bingo-game",
-  "round": 2,
-  "status": "pass",
+  "round": 1,
+  "status": "fail",
   "assertionsSummary": {
     "total": 71,
-    "passed": 71,
-    "failed": 0,
+    "passed": 68,
+    "failed": 3,
     "blocked": 0
   },
   "passedAssertions": [
@@ -15,9 +15,6 @@
     "VAL-BG-004",
     "VAL-BG-005",
     "VAL-BG-006",
-    "VAL-BG-007",
-    "VAL-BG-008",
-    "VAL-BG-009",
     "VAL-BG-010",
     "VAL-BG-011",
     "VAL-BG-012",
@@ -81,7 +78,20 @@
     "VAL-XF-013",
     "VAL-XF-016"
   ],
-  "failedAssertions": [],
+  "failedAssertions": [
+    {
+      "id": "VAL-BG-007",
+      "reason": "Numeric seeds (0, 1) crash — TanStack Router coerces purely numeric query params to numbers, but the Zod schema expects string. Error: 'Invalid input: expected string, received number'. Non-numeric edge-case seeds (a, 00000, space, verylong) work correctly. Fix: Use z.coerce.string() or add a preprocess step in the Zod schema to convert numbers to strings."
+    },
+    {
+      "id": "VAL-BG-008",
+      "reason": "Navigating to /game (no seed param) redirects to a random seed URL but then crashes with React error: 'Rendered more hooks than during the previous render'. The redirect changes the route params, causing a hooks mismatch between the initial and redirected render. Fix: Use a server-side redirect or ensure the redirect doesn't trigger a re-render that changes hook count."
+    },
+    {
+      "id": "VAL-BG-009",
+      "reason": "Empty seed (/game?seed=) triggers the same redirect-and-hooks-crash as VAL-BG-008. Same root cause."
+    }
+  ],
   "blockedAssertions": [],
   "appliedUpdates": [
     {
@@ -90,5 +100,5 @@
       "source": "flow-report"
     }
   ],
-  "previousRound": ".factory/validation/bingo-game/user-testing/synthesis.json.round1"
+  "previousRound": null
 }
