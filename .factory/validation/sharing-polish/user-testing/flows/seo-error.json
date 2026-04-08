@@ -1,0 +1,113 @@
+{
+  "groupId": "seo-error",
+  "testedAt": "2026-04-08T12:58:00Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "sessionName": "ca341b40ae46__seo",
+    "gamePage": "http://localhost:3000/game?seed=seotest"
+  },
+  "toolsUsed": ["agent-browser", "curl"],
+  "assertions": [
+    {
+      "id": "VAL-SE-002",
+      "title": "Game page has a descriptive title tag",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /game?seed=seotest", "expected": "Page loads with descriptive title", "observed": "Page loaded with title 't3ingo — Playing Bingo'" },
+        { "action": "Eval document.title", "expected": "Title contains relevant context like 't3ingo' and game reference", "observed": "document.title = 't3ingo — Playing Bingo'" }
+      ],
+      "evidence": {
+        "screenshots": ["sharing-polish/seo-error/VAL-SE-002-game-page.png"],
+        "consoleErrors": "none",
+        "network": "GET /game?seed=seotest -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SE-003",
+      "title": "Meta description tag exists",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /game?seed=seotest, eval meta[name=description]", "expected": "Meta description exists with human-readable content", "observed": "Game page meta description: 'Play Theo Twitch Bingo! Mark squares as funny Theo moments happen during the livestream and celebrate when you complete a line.'" },
+        { "action": "Navigate to /, eval meta[name=description]", "expected": "Landing page has meta description", "observed": "Landing page meta description: 'A bingo game for Theo Twitch livestreams. Get a random board of funny recurring Theo moments and play along!'" }
+      ],
+      "evidence": {
+        "screenshots": ["sharing-polish/seo-error/VAL-SE-003-landing-meta.png"],
+        "consoleErrors": "none",
+        "network": "GET / -> 200, GET /game?seed=seotest -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SE-004",
+      "title": "Open Graph meta tags exist",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to landing page /, eval og:title and og:description", "expected": "og:title and og:description present", "observed": "og:title = 't3ingo — Theo Twitch Bingo', og:description = 'A bingo game for Theo Twitch livestreams. Get a random board of funny recurring Theo moments and play along!'" },
+        { "action": "Check for og:type", "expected": "og:type present", "observed": "og:type = 'website' (confirmed via curl of HTML source)" }
+      ],
+      "evidence": {
+        "screenshots": ["sharing-polish/seo-error/VAL-SE-003-landing-meta.png"],
+        "consoleErrors": "none",
+        "network": "GET / -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SE-006",
+      "title": "Game page board text is SSR'd or crawlable",
+      "status": "pass",
+      "steps": [
+        { "action": "curl http://localhost:3000/game?seed=seotest", "expected": "HTML source contains board structure and square text", "observed": "Full HTML response contains all 25 board squares with text content including h1 't3ingo', h2 'Bingo Board', and all square labels (e.g., 'Says something self-deprecating about his coding speed', 'Gets nerdsniped', etc.). Board is rendered as 25 <button> elements with aria-pressed attributes inside a grid div." }
+      ],
+      "evidence": {
+        "screenshots": [],
+        "consoleErrors": "none",
+        "network": "GET /game?seed=seotest -> 200 with full SSR HTML",
+        "htmlSource": "sharing-polish/seo-error/VAL-SE-006-ssr-source.html"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-XF-014",
+      "title": "Error boundary — invalid route shows graceful fallback",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /nonexistent-page", "expected": "Graceful 404 page, no raw error stack trace", "observed": "Displays 404 page with heading '404', paragraph 'Page not found', description 'The page you're looking for doesn't exist. Maybe you took a wrong turn on the way to bingo?', and 'Go Home' link to /" },
+        { "action": "Navigate to /game/invalid", "expected": "Graceful handling, no crash", "observed": "Redirects to /game?seed=r9xrYZs7Lh (valid game page with generated seed). Graceful fallback." },
+        { "action": "Check console errors", "expected": "No errors", "observed": "No console errors on either route" }
+      ],
+      "evidence": {
+        "screenshots": ["sharing-polish/seo-error/VAL-XF-014-nonexistent-page.png", "sharing-polish/seo-error/VAL-XF-014-game-invalid.png"],
+        "consoleErrors": "none",
+        "network": "GET /nonexistent-page -> 200 (404 page served), GET /game/invalid -> redirect to /game?seed=r9xrYZs7Lh"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-XF-015",
+      "title": "Performance — game page loads within acceptable time",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to landing page /, record timestamp", "expected": "Landing page loads fast", "observed": "Landing page loaded in ~26ms (navigation duration from Performance API)" },
+        { "action": "Click Play button at timestamp 1775620324210", "expected": "Navigate to game page", "observed": "Navigated to /game?seed=ZfvwEyNYAQ" },
+        { "action": "Wait 1500ms then check board state", "expected": "Board fully rendered and interactive within 3 seconds", "observed": "After 1500ms: document.readyState='complete', board element exists ([role='group'][aria-label*='Bingo board']). Total time from click to verified load: <2 seconds." }
+      ],
+      "evidence": {
+        "screenshots": ["sharing-polish/seo-error/VAL-XF-015-game-loaded.png"],
+        "consoleErrors": "none",
+        "network": "Click timestamp: 1775620324210, verified loaded: 1775620326202 (<2s elapsed)",
+        "timing": {
+          "clickTimestamp": 1775620324210,
+          "verifiedLoadedTimestamp": 1775620326202,
+          "elapsedMs": 1992,
+          "note": "Includes 1500ms sleep; actual render likely <500ms"
+        }
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 6 assertions: all 6 passed. VAL-SE-002 (game page title), VAL-SE-003 (meta description), VAL-SE-004 (OG tags), VAL-SE-006 (SSR content), VAL-XF-014 (error boundary), and VAL-XF-015 (performance). All SEO meta tags are properly set on both landing and game pages. Game page is fully SSR'd with all 25 squares in the HTML source. Invalid routes are handled gracefully with a styled 404 page or redirect. Game page loads well under the 3-second threshold."
+}

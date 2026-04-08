@@ -1,0 +1,157 @@
+{
+  "groupId": "sharing-1",
+  "testedAt": "2026-04-08T04:00:16Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "session": "ca341b40ae46__sharing1",
+    "gamePage": "http://localhost:3000/game?seed=sharetest1"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-SH-001",
+      "title": "\"Share\" button copies URL to clipboard",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /game?seed=sharetest1", "expected": "Game page loads with board", "observed": "Game page loaded with 25 squares and Share button visible" },
+        { "action": "Install clipboard mock to capture written URL", "expected": "Mock intercepts navigator.clipboard.writeText", "observed": "Mock installed successfully, verified with test write" },
+        { "action": "Click Share button (@e27)", "expected": "Current page URL written to clipboard", "observed": "Clipboard mock captured: \"http://localhost:3000/game?seed=sharetest1\" — matches current page URL exactly" }
+      ],
+      "evidence": {
+        "screenshots": ["sharing-polish/sharing-1/VAL-SH-001-before-share.png"],
+        "consoleErrors": "none",
+        "network": "N/A — clipboard operation, no network request",
+        "clipboardContent": "http://localhost:3000/game?seed=sharetest1",
+        "note": "Used navigator.clipboard.writeText mock to capture clipboard content because headless Chrome denies clipboard read/write permissions. The mock resolved successfully, confirming the app calls writeText with the correct URL."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SH-002",
+      "title": "Shared URL produces identical board",
+      "status": "pass",
+      "steps": [
+        { "action": "Capture board text from original tab", "expected": "Array of 25 square labels", "observed": "Captured 25 square labels from original tab" },
+        { "action": "Open shared URL in new tab (same seed=sharetest1)", "expected": "New tab loads with same board layout", "observed": "New tab loaded with identical board — all 25 square labels match exactly" },
+        { "action": "Compare board texts between tabs", "expected": "Identical text in identical positions", "observed": "All 25 labels match in the same order. Board layout is identical." }
+      ],
+      "evidence": {
+        "screenshots": [
+          "sharing-polish/sharing-1/initial-board.png",
+          "sharing-polish/sharing-1/VAL-SH-002-shared-url-board.png"
+        ],
+        "consoleErrors": "none",
+        "network": "N/A",
+        "originalBoardTexts": [
+          "Shows off a keyboard or mechanical keyboard take",
+          "Roasts a tech startup",
+          "Discusses Vercel or Next.js",
+          "Mentions living in San Francisco",
+          "Goes on an extended skateboard tangent",
+          "Goes on a tangent about design/UX",
+          "Talks about AI coding assistants",
+          "Gets someone a job / to SF",
+          "Does the \"I'm not mad, I'm just disappointed\" look",
+          "References a previous stream or video",
+          "Accidentally closes the wrong tab",
+          "Mentions how much he loves his team",
+          "Gets nerdsniped",
+          "Gets emotional about open source",
+          "Argues with chat about tabs vs spaces",
+          "Talks about his streaming setup",
+          "Gets nerdsniped into a rabbit hole on stream",
+          "Talks about how bad most software is",
+          "Brings up the fountain again",
+          "Hasn't had time to do his hair",
+          "Says \"this is actually really simple\" about something complex",
+          "Calls a viewer \"motherfucker\"",
+          "Brings up the state of web development",
+          "Gets trolled by his team",
+          "Says something self-deprecating about his coding speed"
+        ],
+        "sharedUrlBoardTexts": "IDENTICAL — all 25 labels match in same order"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SH-003",
+      "title": "Share provides user feedback on success",
+      "status": "pass",
+      "steps": [
+        { "action": "Install clipboard mock (resolves successfully) on fresh page", "expected": "Mock ready", "observed": "Mock installed on fresh page load" },
+        { "action": "Click Share button", "expected": "Button shows 'Copied!' feedback", "observed": "Button text changed to 'Copied!', aria-label changed to 'Copied!', button gained green styling (border-green-400, bg-green-50, text-green-700)" },
+        { "action": "Take screenshot 300ms after click", "expected": "Screenshot shows feedback indicator", "observed": "Screenshot shows green 'Copied!' button" }
+      ],
+      "evidence": {
+        "screenshots": ["sharing-polish/sharing-1/VAL-SH-003-copied-feedback-visible.png"],
+        "consoleErrors": "none",
+        "network": "N/A",
+        "buttonState300msAfterClick": {
+          "text": "Copied!",
+          "ariaLabel": "Copied!",
+          "hasGreenClass": true,
+          "hasRedClass": false
+        }
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SH-004",
+      "title": "Share feedback is temporary",
+      "status": "pass",
+      "steps": [
+        { "action": "Wait 3 seconds after 'Copied!' feedback appeared", "expected": "Button reverts to 'Share' label", "observed": "After 3 seconds, button text is 'Share', aria-label is 'Share', no green/red styling classes present" },
+        { "action": "Take screenshot 3 seconds after click", "expected": "Screenshot shows original 'Share' button", "observed": "Screenshot confirms button has reverted to original 'Share' state" }
+      ],
+      "evidence": {
+        "screenshots": ["sharing-polish/sharing-1/VAL-SH-004-feedback-reverted.png"],
+        "consoleErrors": "none",
+        "network": "N/A",
+        "buttonState3sAfterClick": {
+          "text": "Share",
+          "ariaLabel": "Share",
+          "hasGreenClass": false,
+          "hasRedClass": false
+        },
+        "note": "FEEDBACK_DURATION in source code is 2000ms. Button reverted to 'Share' well within 3 seconds."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SH-005",
+      "title": "Share copies the full URL including seed",
+      "status": "pass",
+      "steps": [
+        { "action": "Click Share button with clipboard mock installed", "expected": "Full URL with seed parameter captured", "observed": "Clipboard mock captured: 'http://localhost:3000/game?seed=sharetest1'" },
+        { "action": "Verify URL contains seed parameter", "expected": "URL contains 'seed=sharetest1'", "observed": "URL is 'http://localhost:3000/game?seed=sharetest1' — contains seed= parameter with full value 'sharetest1', not truncated" },
+        { "action": "Verify URL is valid and navigable", "expected": "URL can be opened in browser", "observed": "URL was successfully opened in a new tab and produced a valid board (verified in VAL-SH-002)" }
+      ],
+      "evidence": {
+        "screenshots": ["sharing-polish/sharing-1/VAL-SH-002-shared-url-board.png"],
+        "consoleErrors": "none",
+        "network": "N/A",
+        "capturedUrl": "http://localhost:3000/game?seed=sharetest1",
+        "urlContainsSeedParam": true,
+        "seedValue": "sharetest1",
+        "urlIsComplete": true
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "Headless Chrome denies clipboard read/write permissions by default. navigator.clipboard.writeText() fails with 'Write permission denied' and navigator.clipboard.readText() fails with 'Read permission denied'. This prevented direct clipboard verification.",
+      "resolved": true,
+      "resolution": "Installed a JS mock of navigator.clipboard.writeText that captures the written URL and resolves successfully, allowing verification of the Share button's clipboard behavior without actual clipboard access.",
+      "affectedAssertions": ["VAL-SH-001", "VAL-SH-003", "VAL-SH-004", "VAL-SH-005"]
+    },
+    {
+      "description": "On first attempt without the clipboard mock, the Share button showed 'Could not copy' error feedback (since real clipboard write failed) then reverted to 'Share' after 2 seconds. This initially made it seem like the button wasn't providing feedback at all.",
+      "resolved": true,
+      "resolution": "Re-loaded the page and installed the clipboard mock before any Share interaction. This allowed the button to show the 'Copied!' success feedback as intended.",
+      "affectedAssertions": ["VAL-SH-003"]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 5 assertions: all 5 passed. VAL-SH-001 (clipboard copy), VAL-SH-002 (identical board from shared URL), VAL-SH-003 (visible feedback), VAL-SH-004 (temporary feedback), VAL-SH-005 (full URL with seed) all confirmed working. Note: clipboard functionality was verified via JS mock due to headless Chrome clipboard permission restrictions — the actual navigator.clipboard.writeText call was intercepted and its argument verified."
+}

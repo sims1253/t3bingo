@@ -1,0 +1,25 @@
+{
+  "milestone": "sharing-polish",
+  "round": 1,
+  "status": "pass",
+  "assertionsSummary": {
+    "total": 37,
+    "passed": 37,
+    "failed": 0,
+    "blocked": 0
+  },
+  "passedAssertions": [
+    "VAL-SH-001", "VAL-SH-002", "VAL-SH-003", "VAL-SH-004", "VAL-SH-005",
+    "VAL-SH-006", "VAL-SH-007", "VAL-SH-008", "VAL-SH-009",
+    "VAL-RD-001", "VAL-RD-002", "VAL-RD-003", "VAL-RD-004", "VAL-RD-005",
+    "VAL-RD-006", "VAL-RD-007", "VAL-RD-009", "VAL-RD-010", "VAL-RD-011",
+    "VAL-SE-002", "VAL-SE-003", "VAL-SE-004", "VAL-SE-006",
+    "VAL-AX-001", "VAL-AX-002", "VAL-AX-003", "VAL-AX-004", "VAL-AX-005",
+    "VAL-AX-006", "VAL-AX-007", "VAL-AX-008", "VAL-AX-009", "VAL-AX-010",
+    "VAL-XF-002", "VAL-XF-006", "VAL-XF-014", "VAL-XF-015"
+  ],
+  "failedAssertions": [],
+  "blockedAssertions": [],
+  "appliedUpdates": [],
+  "previousRound": null
+}

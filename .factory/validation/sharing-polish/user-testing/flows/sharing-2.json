@@ -1,0 +1,98 @@
+{
+  "groupId": "sharing-2",
+  "testedAt": "2026-04-08T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "agentBrowserSession": "ca341b40ae46__sharing2",
+    "gamePage": "http://localhost:3000/game?seed=sharetest2",
+    "markState": "per-tab via sessionStorage"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-SH-006",
+      "title": "Share button works from bingo state",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /game?seed=sharetest2", "expected": "Game page loads with 25 squares", "observed": "Game page loaded with 25 unmarked squares" },
+        { "action": "Mark all 5 squares in row 1 (indices 0-4) via JS eval", "expected": "Bingo celebration triggered", "observed": "Bingo celebration displayed (🎉 BINGO! 🎉)" },
+        { "action": "Set up clipboard interceptor and click Share button", "expected": "URL copied to clipboard despite celebration", "observed": "Clipboard captured: http://localhost:3000/game?seed=sharetest2 — matches current URL" }
+      ],
+      "evidence": {
+        "screenshots": ["sharing-polish/sharing-2/VAL-SH-006-initial-board.png", "sharing-polish/sharing-2/VAL-SH-006-bingo-celebration.png", "sharing-polish/sharing-2/VAL-SH-006-share-during-bingo.png"],
+        "consoleErrors": "none",
+        "network": "n/a (clipboard operation)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SH-007",
+      "title": "Share button does not alter board state",
+      "status": "pass",
+      "steps": [
+        { "action": "Capture board state before clicking Share (5 marked squares in row 1)", "expected": "Board state recorded", "observed": "5 squares marked (indices 0-4), 20 unmarked" },
+        { "action": "Click Share button", "expected": "Board state unchanged", "observed": "Board state identical after click: statesMatch=true, changedIndices=[]" }
+      ],
+      "evidence": {
+        "screenshots": ["sharing-polish/sharing-2/VAL-SH-007-before-share.png", "sharing-polish/sharing-2/VAL-SH-007-after-share.png"],
+        "consoleErrors": "none",
+        "network": "n/a (clipboard operation)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SH-008",
+      "title": "Share button handles clipboard failure gracefully",
+      "status": "pass",
+      "steps": [
+        { "action": "Override navigator.clipboard.writeText to throw error, remove navigator.share", "expected": "Clipboard API will fail on next share", "observed": "Clipboard API overridden to throw" },
+        { "action": "Click Share button", "expected": "Error feedback shown, no crash", "observed": "Button text changed to 'Could not copy' with error styling (red border/background)" },
+        { "action": "Check console errors", "expected": "No unhandled errors", "observed": "No console errors" }
+      ],
+      "evidence": {
+        "screenshots": ["sharing-polish/sharing-2/VAL-SH-008-clipboard-error-feedback.png"],
+        "consoleErrors": "none",
+        "network": "n/a (failed clipboard operation)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SH-009",
+      "title": "Share works on mobile browsers",
+      "status": "pass",
+      "steps": [
+        { "action": "Set viewport to 375×667 (mobile)", "expected": "Page reflows to mobile layout", "observed": "Mobile layout displayed with Share button visible" },
+        { "action": "Set up clipboard interceptor (no navigator.share available on desktop emulation)", "expected": "Clipboard fallback works", "observed": "Clipboard interceptor ready" },
+        { "action": "Click Share button", "expected": "URL copied successfully, no error", "observed": "Clipboard captured: http://localhost:3000/game?seed=sharetest2 — matches current URL" },
+        { "action": "Check console errors", "expected": "No errors", "observed": "No console errors" }
+      ],
+      "evidence": {
+        "screenshots": ["sharing-polish/sharing-2/VAL-SH-009-mobile-viewport.png", "sharing-polish/sharing-2/VAL-SH-009-mobile-share-completed.png"],
+        "consoleErrors": "none",
+        "network": "n/a (clipboard operation)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-XF-002",
+      "title": "Share mid-game, open in new tab, continue independently",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear marks and reload page, then mark 3 squares (indices 0, 1, 2)", "expected": "3 squares marked on the board", "observed": "3 squares marked: indices [0, 1, 2]" },
+        { "action": "Click Share and capture URL", "expected": "URL copied with seed", "observed": "Clipboard captured: http://localhost:3000/game?seed=sharetest2" },
+        { "action": "Open captured URL in new tab", "expected": "New tab shows same board, all unmarked", "observed": "New tab shows same board text layout, all 25 squares unmarked (markedCount=0, allUnmarked=true)" },
+        { "action": "Compare board texts between tabs", "expected": "Board layouts match", "observed": "Board texts are identical across both tabs (same seed determinism)" },
+        { "action": "Mark square index 5 in Tab 2, then check Tab 1", "expected": "Tab 1 unaffected by Tab 2 actions", "observed": "Tab 1 still has exactly 3 marked squares [0,1,2] — independent from Tab 2" }
+      ],
+      "evidence": {
+        "screenshots": ["sharing-polish/sharing-2/VAL-XF-002-tab1-3-marked.png", "sharing-polish/sharing-2/VAL-XF-002-tab2-fresh-board.png"],
+        "consoleErrors": "none",
+        "network": "n/a (clipboard operation)"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 5 assertions: all 5 passed. VAL-SH-006 (share during bingo) ✅, VAL-SH-007 (share doesn't alter board) ✅, VAL-SH-008 (clipboard failure graceful) ✅, VAL-SH-009 (mobile share) ✅, VAL-XF-002 (share mid-game, new tab independent) ✅"
+}
