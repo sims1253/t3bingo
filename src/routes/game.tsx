@@ -8,7 +8,7 @@ import { Board } from '#/components/Board'
 import { Celebration } from '#/components/Celebration'
 import { ShareButton } from '#/components/ShareButton'
 import { ShareOnSocial } from '#/components/ShareOnSocial'
-import { RotateCcw } from 'lucide-react'
+import { ExternalLink, RotateCcw } from 'lucide-react'
 
 const FOOTER_LINKS = [
   { href: 'https://x.com/scholzmx', label: 'X / Twitter' },
@@ -107,6 +107,15 @@ function GamePage() {
           <h1 className="display-title text-3xl font-bold tracking-tight text-[var(--text-primary)] sm:text-4xl">
             t3bingo
           </h1>
+          <a
+            href="https://www.twitch.tv/theo"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-1.5 inline-flex items-center gap-1 text-xs text-[var(--text-muted)] no-underline transition-colors hover:text-[var(--accent)]"
+          >
+            <ExternalLink className="h-3 w-3" aria-hidden="true" />
+            Watch live on Twitch
+          </a>
         </header>
 
         <Celebration hasBingo={hasBingo} />

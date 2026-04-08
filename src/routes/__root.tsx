@@ -1,6 +1,5 @@
 import { HeadContent, Link, Scripts, createRootRoute } from '@tanstack/react-router'
-import { Analytics } from '@vercel/analytics/react'
-import { SpeedInsights } from '@vercel/speed-insights/react'
+import { VercelInsights } from '#/components/VercelInsights'
 import appCss from '../styles.css?url'
 
 export const Route = createRootRoute({
@@ -60,8 +59,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body className="font-sans antialiased bg-[var(--bg)] text-[var(--text-primary)] min-h-screen">
         {children}
         <Scripts />
-        <Analytics />
-        <SpeedInsights />
+        <VercelInsights />
       </body>
     </html>
   )
