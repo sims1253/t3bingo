@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { z } from 'zod'
 import { checkBingo, generateBoard } from '#/lib/bingo'
@@ -8,12 +8,38 @@ import { Board } from '#/components/Board'
 import { Celebration } from '#/components/Celebration'
 import { RotateCcw, Share2 } from 'lucide-react'
 
+/**
+ * Search param schema for the game route.
+ *
+ * TanStack Router's default URL parser (qss.toValue) coerces purely numeric
+ * query params to numbers (e.g. seed=0 → 0). Using z.union([z.string(), z.number()])
+ * accepts both types without transforming, which prevents TanStack Router from
+ * re-serializing the URL with JSON.stringify quotes (seed=%220%22).
+ * The seed is converted to string in the component.
+ */
 const gameSearchSchema = z.object({
-  seed: z.string().optional().default(''),
+  seed: z.union([z.string(), z.number()]).optional().default(''),
 })
 
 export const Route = createFileRoute('/game')({
   validateSearch: gameSearchSchema,
+  /**
+   * Redirect to a random seed when no seed (or empty seed) is provided.
+   * Using beforeLoad ensures the redirect happens before the component
+   * mounts, avoiding React hooks mismatch errors that occur with
+   * client-side state-based redirects.
+   *
+   * Note: Check with === '' rather than !seed because seed can be 0 (number)
+   * which is falsy but valid.
+   */
+  beforeLoad: ({ search }) => {
+    if (search.seed === '' || search.seed === undefined) {
+      throw redirect({
+        to: '/game',
+        search: { seed: generateRandomSeed() },
+      })
+    }
+  },
   head: () => ({
     meta: [{ title: 't3ingo — Playing' }],
   }),
@@ -22,18 +48,16 @@ export const Route = createFileRoute('/game')({
 
 function GamePage() {
   const { seed: rawSeed } = Route.useSearch()
+  // TanStack Router may provide seed as number (e.g. seed=0 → 0) due to
+  // qss.toValue coercion. Convert to string for board generation.
+  const seed = String(rawSeed ?? '')
   const navigate = useNavigate()
 
-  // If no seed provided (empty string), generate a random one and navigate
-  const seed = rawSeed || ''
+  // Mark state: always initialize as empty Set to avoid SSR hydration mismatch.
+  // Marks are loaded from sessionStorage in useEffect after hydration completes.
+  const [marks, setMarks] = useState<Set<number>>(() => new Set())
 
-  // Mark state: initialized from sessionStorage, synced on every change
-  const [marks, setMarks] = useState<Set<number>>(() => {
-    if (typeof window === 'undefined' || !seed) return new Set()
-    return loadMarks(seed, (key) => window.sessionStorage.getItem(key))
-  })
-
-  // Reload marks when seed changes (e.g. URL manually edited)
+  // Load marks from sessionStorage after hydration, and when seed changes
   useEffect(() => {
     if (!seed) return
     setMarks(loadMarks(seed, (key) => window.sessionStorage.getItem(key)))
@@ -53,20 +77,6 @@ function GamePage() {
     const newSeed = generateDifferentSeed(seed)
     void navigate({ to: '/game', search: { seed: newSeed } })
   }, [seed, navigate])
-
-  if (!seed) {
-    const newSeed = generateRandomSeed()
-    void navigate({
-      to: '/game',
-      search: { seed: newSeed },
-      replace: true,
-    })
-    return (
-      <main className="flex min-h-screen flex-col items-center justify-center px-4 py-12">
-        <p className="text-[var(--sea-ink-soft)]">Loading board...</p>
-      </main>
-    )
-  }
 
   const board = generateBoard(seed)
 
