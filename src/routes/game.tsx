@@ -10,6 +10,11 @@ import { ShareButton } from '#/components/ShareButton'
 import { ShareOnSocial } from '#/components/ShareOnSocial'
 import { RotateCcw } from 'lucide-react'
 
+const FOOTER_LINKS = [
+  { href: 'https://x.com/scholzmx', label: 'X / Twitter' },
+  { href: 'https://github.com/sims1253/t3bingo', label: 'GitHub' },
+] as const
+
 /**
  * Search param schema for the game route.
  *
@@ -44,7 +49,7 @@ export const Route = createFileRoute('/game')({
   },
   head: () => ({
     meta: [
-      { title: 't3ingo — Playing Bingo' },
+      { title: 't3bingo — Playing Bingo' },
       {
         name: 'description',
         content:
@@ -100,7 +105,7 @@ function GamePage() {
       <div className="w-full max-w-2xl">
         <header className="mb-6 text-center">
           <h1 className="display-title text-3xl font-bold tracking-tight text-[var(--text-primary)] sm:text-4xl">
-            t3ingo
+            t3bingo
           </h1>
         </header>
 
@@ -113,18 +118,40 @@ function GamePage() {
           <button
             type="button"
             onClick={handleNewGame}
-            className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg-card)] px-5 py-2.5 text-sm font-medium text-[var(--text-secondary)] transition-colors hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)] hover:border-[var(--border-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/50"
+            className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg px-5 py-2.5 text-sm font-medium text-[var(--text-muted)] transition-colors hover:text-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/50"
           >
             <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
             New Game
           </button>
-          <ShareButton />
+          <ShareButton hasBingo={hasBingo} />
           <ShareOnSocial hasBingo={hasBingo} boardRef={boardRef} />
         </div>
 
-        <p className="mt-5 text-center font-mono text-[11px] text-[var(--text-muted)]">
-          seed: {seed}
-        </p>
+        <button
+          type="button"
+          onClick={() => void navigator.clipboard?.writeText(window.location.href)}
+          className="group mt-4 mx-auto flex cursor-pointer items-center gap-1.5 rounded-md px-3 py-1.5 text-[11px] font-mono text-[var(--text-muted)] transition-colors hover:bg-[var(--accent-glow)] hover:text-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/50"
+          aria-label={`Copy board link. Board ID: ${seed}`}
+        >
+          <span className="text-[10px] opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true">
+            &#x2398;
+          </span>
+          board: {seed}
+        </button>
+
+        <footer className="mt-6 flex items-center justify-center gap-4 text-[11px] text-[var(--text-muted)]">
+          {FOOTER_LINKS.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/50 rounded-sm"
+            >
+              {link.label}
+            </a>
+          ))}
+        </footer>
       </div>
     </main>
   )

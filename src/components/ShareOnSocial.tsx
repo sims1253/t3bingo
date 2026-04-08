@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 import html2canvas from 'html2canvas'
 import { Camera, CheckCircle, Loader2, XCircle } from 'lucide-react'
+import { createCaptureClone, removeCaptureClone } from '#/lib/capture'
 
 /** States for the share button */
 type ShareState = 'idle' | 'loading' | 'copied' | 'error'
@@ -66,12 +67,18 @@ export function ShareOnSocial({ hasBingo, boardRef }: ShareOnSocialProps) {
     clearTimers()
 
     try {
-      // Capture the board using html2canvas
-      const canvas = await html2canvas(boardRef.current, {
+      // html2canvas cannot resolve CSS custom properties (var(--*)).
+      // Create an offscreen clone with resolved inline styles for capture.
+      const clone = createCaptureClone(boardRef.current)
+
+      // Capture the clone using html2canvas
+      const canvas = await html2canvas(clone, {
         backgroundColor: null,
         scale: 2, // Higher resolution for better quality
         useCORS: true,
         logging: false,
+      }).finally(() => {
+        removeCaptureClone(clone)
       })
 
       const url = window.location.href
@@ -94,10 +101,10 @@ export function ShareOnSocial({ hasBingo, boardRef }: ShareOnSocialProps) {
           )
         })
 
-        const file = new File([blob], 't3ingo-board.png', { type: 'image/png' })
+        const file = new File([blob], 't3bingo-board.png', { type: 'image/png' })
         const shareData = {
-          title: 't3ingo — Theo Twitch Bingo',
-          text: 'Check out my t3ingo bingo board!',
+          title: 't3bingo — Theo Twitch Bingo',
+          text: 'Check out my t3bingo bingo board!',
           url,
           files: [file],
         }
@@ -126,7 +133,7 @@ export function ShareOnSocial({ hasBingo, boardRef }: ShareOnSocialProps) {
       // Download the image
       const dataUrl = canvas.toDataURL('image/png')
       const link = document.createElement('a')
-      link.download = 't3ingo-board.png'
+      link.download = 't3bingo-board.png'
       link.href = dataUrl
       document.body.appendChild(link)
       link.click()
@@ -195,7 +202,7 @@ export function ShareOnSocial({ hasBingo, boardRef }: ShareOnSocialProps) {
             ? 'border-[var(--accent)]/40 bg-[var(--accent-glow)] text-[var(--accent)] '
             : shareState === 'error'
               ? 'border-[var(--destructive)]/40 bg-[var(--destructive)]/10 text-[var(--destructive)] '
-              : 'border-[var(--border)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)] hover:border-[var(--border-hover)] '
+              : 'border-[var(--accent)]/30 bg-[var(--accent)] text-white hover:bg-[var(--accent-dim)] hover:border-[var(--accent)]/50 '
           ) +
           (isLoading ? 'opacity-60 cursor-not-allowed' : '')
         }

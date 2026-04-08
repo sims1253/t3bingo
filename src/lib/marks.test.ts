@@ -11,15 +11,15 @@ import {
 
 describe('getMarksKey', () => {
   it('prefixes the seed with the correct key prefix', () => {
-    expect(getMarksKey('abc')).toBe('t3ingo-marks-abc')
+    expect(getMarksKey('abc')).toBe('t3bingo-marks-abc')
   })
 
   it('handles empty seed', () => {
-    expect(getMarksKey('')).toBe('t3ingo-marks-')
+    expect(getMarksKey('')).toBe('t3bingo-marks-')
   })
 
   it('handles unicode seed', () => {
-    expect(getMarksKey('🎮')).toBe('t3ingo-marks-🎮')
+    expect(getMarksKey('🎮')).toBe('t3bingo-marks-🎮')
   })
 
   it('uses the MARKS_KEY_PREFIX constant', () => {
@@ -191,14 +191,14 @@ describe('loadMarks', () => {
 
   it('loads marks from storage', () => {
     const storage = new Map<string, string>()
-    storage.set('t3ingo-marks-test', '[0, 5, 12]')
+    storage.set('t3bingo-marks-test', '[0, 5, 12]')
     const getItem = (key: string) => storage.get(key) ?? null
     expect(loadMarks('test', getItem)).toEqual(new Set([0, 5, 12]))
   })
 
   it('handles corrupt data gracefully', () => {
     const storage = new Map<string, string>()
-    storage.set('t3ingo-marks-test', 'corrupt{')
+    storage.set('t3bingo-marks-test', 'corrupt{')
     const getItem = (key: string) => storage.get(key) ?? null
     expect(loadMarks('test', getItem)).toEqual(new Set())
   })
@@ -209,14 +209,14 @@ describe('saveMarks', () => {
     const storage = new Map<string, string>()
     const setItem = (key: string, value: string) => storage.set(key, value)
     saveMarks('test', new Set([0, 5, 12]), setItem)
-    expect(storage.get('t3ingo-marks-test')).toBe('[0,5,12]')
+    expect(storage.get('t3bingo-marks-test')).toBe('[0,5,12]')
   })
 
   it('persists empty marks as empty array', () => {
     const storage = new Map<string, string>()
     const setItem = (key: string, value: string) => storage.set(key, value)
     saveMarks('test', new Set(), setItem)
-    expect(storage.get('t3ingo-marks-test')).toBe('[]')
+    expect(storage.get('t3bingo-marks-test')).toBe('[]')
   })
 
   it('round-trips: save then load', () => {
@@ -237,7 +237,7 @@ describe('saveMarks', () => {
     saveMarks('seed-a', new Set([0]), setItem)
     saveMarks('seed-b', new Set([1]), setItem)
 
-    expect(storage.get('t3ingo-marks-seed-a')).toBe('[0]')
-    expect(storage.get('t3ingo-marks-seed-b')).toBe('[1]')
+    expect(storage.get('t3bingo-marks-seed-a')).toBe('[0]')
+    expect(storage.get('t3bingo-marks-seed-b')).toBe('[1]')
   })
 })

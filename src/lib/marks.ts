@@ -2,7 +2,7 @@
  * Mark state management for bingo squares.
  *
  * Mark state is stored in sessionStorage keyed by seed, e.g.
- * `t3ingo-marks-{seed}`. The value is a JSON array of marked indices.
+ * `t3bingo-marks-{seed}`. The value is a JSON array of marked indices.
  *
  * This module provides pure functions for managing mark state.
  * All session storage access is isolated in load/save functions
@@ -10,7 +10,7 @@
  */
 
 /** Session storage key prefix */
-export const MARKS_KEY_PREFIX = 't3ingo-marks-'
+export const MARKS_KEY_PREFIX = 't3bingo-marks-'
 
 /** Build the full sessionStorage key for a given seed */
 export function getMarksKey(seed: string): string {

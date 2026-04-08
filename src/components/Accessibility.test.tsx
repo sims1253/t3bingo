@@ -321,9 +321,9 @@ describe('VAL-AX-008: Logical heading structure', () => {
     const h1Matches = gameSource.match(/<h1[\s>]/g)
     expect(h1Matches).toHaveLength(1)
 
-    // Verify h1 contains "t3ingo"
+    // Verify h1 contains "t3bingo"
     expect(gameSource).toContain('<h1')
-    expect(gameSource).toContain('t3ingo')
+    expect(gameSource).toContain('t3bingo')
   })
 
   it('game page source has an h2 heading for the board section', async () => {

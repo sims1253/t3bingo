@@ -11,3 +11,13 @@ dist-ssr
 .vinxi
 __unconfig*
 todos.json
+.agents
+.factory
+.pi
+.tanstack
+.vscode
+.impeccable
+.impeccable.md
+.skills-lock.json
+.vercel
+skills-lock.json

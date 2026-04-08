@@ -201,8 +201,9 @@ describe('generateBoard', () => {
     expect(differences).toBeGreaterThan(0)
   })
 
-  it('items pool has exactly 45 items', () => {
-    expect(BINGO_ITEMS).toHaveLength(45)
+  it('items pool has enough items to fill the board', () => {
+    // Need at least 25 (1 center + 24 others) to generate a board
+    expect(BINGO_ITEMS.length).toBeGreaterThanOrEqual(25)
   })
 
   it('center item is in the items pool', () => {

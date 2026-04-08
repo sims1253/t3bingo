@@ -1,6 +1,6 @@
 {
-  "short_name": "t3ingo",
-  "name": "t3ingo — Theo Twitch Bingo",
+  "short_name": "t3bingo",
+  "name": "t3bingo — Theo Twitch Bingo",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,7 +20,7 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#4fb8b2",
-  "background_color": "#f8f7f4",
+  "theme_color": "#2d9c6f",
+  "background_color": "#f5f5f0",
   "description": "A bingo game for Theo Twitch livestreams. Get a random board of funny recurring Theo moments and play along!"
 }

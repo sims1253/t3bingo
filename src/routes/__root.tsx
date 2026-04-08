@@ -14,7 +14,7 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 't3ingo — Theo Twitch Bingo',
+        title: 't3bingo — Theo Twitch Bingo',
       },
       {
         name: 'description',
@@ -23,7 +23,7 @@ export const Route = createRootRoute({
       },
       {
         property: 'og:title',
-        content: 't3ingo — Theo Twitch Bingo',
+        content: 't3bingo — Theo Twitch Bingo',
       },
       {
         property: 'og:description',

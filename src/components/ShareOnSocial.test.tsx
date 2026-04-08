@@ -292,7 +292,7 @@ describe('ShareOnSocial', () => {
     expect(screen.getByRole('button')).toHaveAttribute('type', 'button')
   })
 
-  it('calls html2canvas with the board element ref', async () => {
+  it('calls html2canvas with a clone of the board element', async () => {
     const boardElement = document.createElement('div')
     boardElement.className = 'bingo-grid'
 
@@ -304,7 +304,13 @@ describe('ShareOnSocial', () => {
     fireEvent.click(screen.getByRole('button'))
 
     await waitFor(() => {
-      expect(html2canvas).toHaveBeenCalledWith(boardElement, expect.any(Object))
+      // Should be called with an element that is a clone (different from boardElement)
+      const calls = (html2canvas as ReturnType<typeof vi.fn>).mock.calls
+      expect(calls.length).toBeGreaterThanOrEqual(1)
+      const capturedEl = calls[0]![0] as HTMLElement
+      expect(capturedEl).not.toBe(boardElement)
+      expect(capturedEl.tagName).toBe('DIV')
+      expect(html2canvas).toHaveBeenCalledWith(capturedEl, expect.any(Object))
     })
   })
 })

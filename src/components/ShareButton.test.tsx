@@ -97,7 +97,7 @@ describe('ShareButton', () => {
 
     await waitFor(() => {
       expect(share).toHaveBeenCalledWith({
-        title: 't3ingo — Theo Twitch Bingo',
+        title: 't3bingo — Theo Twitch Bingo',
         url: 'http://localhost:3000/game?seed=mobile',
       })
     })

@@ -19,7 +19,12 @@ const FEEDBACK_DURATION = 2000
  * - Disabled during share operation to prevent double-clicks
  * - Does not alter board state
  */
-export function ShareButton() {
+interface ShareButtonProps {
+  /** Whether bingo has been achieved — elevates visual weight */
+  hasBingo?: boolean
+}
+
+export function ShareButton({ hasBingo = false }: ShareButtonProps) {
   const [shareState, setShareState] = useState<ShareState>('idle')
   const [disabled, setDisabled] = useState(false)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -44,7 +49,7 @@ export function ShareButton() {
       if (typeof navigator.share === 'function') {
         try {
           await navigator.share({
-            title: 't3ingo — Theo Twitch Bingo',
+            title: 't3bingo — Theo Twitch Bingo',
             url,
           })
           // Web Share succeeded (or user completed share sheet)
@@ -98,7 +103,9 @@ export function ShareButton() {
           ? 'border-[var(--accent)]/40 bg-[var(--accent-glow)] text-[var(--accent)] '
           : shareState === 'error'
             ? 'border-[var(--destructive)]/40 bg-[var(--destructive)]/10 text-[var(--destructive)] '
-            : 'border-[var(--border)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)] hover:border-[var(--border-hover)] '
+            : hasBingo
+              ? 'border-[var(--border)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)] hover:border-[var(--border-hover)] '
+              : 'border-[var(--border)] bg-[var(--bg-card)] text-[var(--text-secondary)] hover:bg-[var(--bg-card-hover)] hover:text-[var(--text-primary)] hover:border-[var(--border-hover)] '
         ) +
         (disabled ? 'opacity-60 cursor-not-allowed' : '')
       }

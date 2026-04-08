@@ -15,6 +15,10 @@
   --accent-dim: #237a58;
   --accent-glow: rgba(45, 156, 111, 0.1);
   --accent-glow-strong: rgba(45, 156, 111, 0.18);
+  --celebration-glow-inner: rgba(45, 156, 111, 0.05);
+  --celebration-glow-soft: rgba(45, 156, 111, 0.1);
+  --celebration-glow-mid: rgba(45, 156, 111, 0.15);
+  --celebration-glow-strong: rgba(45, 156, 111, 0.2);
   --border: rgba(0, 0, 0, 0.08);
   --border-hover: rgba(0, 0, 0, 0.15);
   --surface-glass: rgba(255, 255, 255, 0.8);
@@ -56,6 +60,10 @@
   --accent-dim: #2d9c6f;
   --accent-glow: rgba(61, 189, 133, 0.1);
   --accent-glow-strong: rgba(61, 189, 133, 0.18);
+  --celebration-glow-inner: rgba(61, 189, 133, 0.05);
+  --celebration-glow-soft: rgba(61, 189, 133, 0.1);
+  --celebration-glow-mid: rgba(61, 189, 133, 0.15);
+  --celebration-glow-strong: rgba(61, 189, 133, 0.2);
   --border: rgba(255, 255, 255, 0.08);
   --border-hover: rgba(255, 255, 255, 0.15);
   --surface-glass: rgba(26, 26, 26, 0.8);
@@ -225,15 +233,15 @@ body::before {
   0%,
   100% {
     box-shadow:
-      0 0 12px rgba(45, 156, 111, 0.2),
-      0 0 24px rgba(45, 156, 111, 0.1),
-      inset 0 0 12px rgba(45, 156, 111, 0.05);
+      0 0 12px var(--celebration-glow-soft),
+      0 0 24px var(--celebration-glow-mid),
+      inset 0 0 12px var(--celebration-glow-inner);
   }
   50% {
     box-shadow:
-      0 0 20px rgba(45, 156, 111, 0.35),
-      0 0 40px rgba(45, 156, 111, 0.15),
-      inset 0 0 20px rgba(45, 156, 111, 0.08);
+      0 0 20px var(--celebration-glow-mid),
+      0 0 40px var(--celebration-glow-strong),
+      inset 0 0 20px var(--celebration-glow-inner);
   }
 }
 
@@ -280,7 +288,7 @@ body::before {
 
   .celebration-glow {
     animation: none !important;
-    box-shadow: 0 0 12px rgba(45, 156, 111, 0.2);
+    box-shadow: 0 0 12px var(--celebration-glow-soft);
   }
 
   .mark-pop {

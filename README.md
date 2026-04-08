@@ -1,12 +1,12 @@
-# t3ingo 🎱
+# t3bingo 🎱
 
 > Theo's Twitch Stream Bingo — mark the moments as they happen live.
 
-![t3ingo screenshot](public/screenshot.png)
+![t3bingo screenshot](public/screenshot.png)
 
 ## What is this?
 
-A **5×5 bingo game** for [Theo's (t3dotgg)](https://twitch.tv/t3dotgg) Twitch livestreams. Visitors get a randomly generated board filled with funny recurring Theo moments, mark squares as they happen, and share their board with friends via URL.
+A **5×5 bingo game** for [Theo's](https://www.twitch.tv/theo) Twitch livestreams. Visitors get a randomly generated board filled with funny recurring Theo moments, mark squares as they happen, and share their board with friends via URL.
 
 **No database. No API. Just vibes and deterministic seeds.**
 
