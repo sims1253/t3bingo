@@ -41,6 +41,6 @@ export const BINGO_ITEMS: readonly string[] = [
   'Crashes out over Android',
   'Declares something is dying',
   'Gives up on sponsor segway after 3 tries',
-  'Asks chat to keep a secret'
-
+  'Asks chat to keep a secret',
+  'Gets Rickrolled',
 ] as const
